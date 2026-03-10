@@ -30,6 +30,15 @@ contract StakingPool is Ownable, ReentrancyGuard {
     mapping(address => uint256) public s_userRewardPerTokenPaid;
     mapping(address => uint256) public s_rewards;
 
+    modifier updateReward(address account) {
+    s_rewardPerTokenStored = rewardPerToken();
+    s_lastUpdateTime = lastTimeRewardApplicable();
+    if(account != address(0)) {
+        s_rewards[account] = earned(account);
+        s_userRewardPerTokenPaid[account] = s_rewardPerTokenStored;
+    }
+    _;
+
 
 
     constructor(address _stakeToken, address _rewardToken) Ownable(msg.sender) {
@@ -53,16 +62,77 @@ contract StakingPool is Ownable, ReentrancyGuard {
     }
 
 
+    /**
+    * @notice Calculates the reward per token accumulated since the last update.
+    * @dev This function is the core of the reward distribution mechanism.
+    * 
+    * The reward per token is a global accumulator that increases over time.
+    * Instead of tracking every user's rewards every second (which would be 
+    * too expensive), we use this single value to calculate any user's rewards
+    * at any point in time.
+    * 
+    * Formula:
+    * rewardPerToken = rewardPerTokenStored + (timeDelta * rewardRate * 1e18 / totalSupply)
+    * 
+    * Where:
+    * - rewardPerTokenStored: previously accumulated value
+    * - timeDelta: seconds elapsed since last update (capped at periodFinish)
+    * - rewardRate: T11 tokens distributed per second across all stakers
+    * - 1e18: precision factor (Solidity has no floating point)
+    * - totalSupply: total tokens currently staked
+    * 
+    * Example:
+    * rewardRate = 10 T11/s, totalSupply = 100, timeDelta = 60s
+    * rewardPerToken = 0 + (60 * 10 * 1e18 / 100) = 6e18
+    * Meaning: every staked token has earned 6 T11 over 60 seconds
+    * 
+    * @return Current reward per token scaled by 1e18
+    */
     function rewardPerToken() public view returns (uint256) {
         uint256 timeDelta = lastTimeRewardApplicable() - s_lastUpdateTime;
         if(s_totalSupply == 0){
             return s_rewardPerTokenStored;
         }else{
-            return s_rewardPerTokenStored + (timeDelta * s_rewardRate * 1e18 / totalSupply)
+            return s_rewardPerTokenStored + (timeDelta * s_rewardRate * 1e18 / s_totalSupply);
         }
-
     }
 
+    /**
+    * @notice Calculates the total amount of T11 rewards earned by an account.
+    * @dev Combines two sources of rewards:
+    * 
+    * 1) Newly accumulated rewards since the last time the user interacted:
+    *    balance * (rewardPerToken NOW - rewardPerToken WHEN USER LAST UPDATED)
+    *    
+    *    The subtraction is crucial — it ensures the user only earns rewards
+    *    from the moment they entered the pool, not from the beginning of time.
+    *    userRewardPerTokenPaid acts as a "checkpoint" set every time the user
+    *    stakes, withdraws, or claims.
+    * 
+    * 2) Previously accumulated rewards (s_rewards[account]):
+    *    Rewards that were calculated during a previous interaction but not
+    *    yet claimed. For example, if a user partially withdraws, their earned
+    *    rewards are saved to s_rewards before their balance changes.
+    * 
+    * Example:
+    * balance = 100 USDC
+    * rewardPerToken() = 8e18
+    * userRewardPerTokenPaid = 6e18  (checkpoint when user entered)
+    * s_rewards = 0
+    * 
+    * earned = 100 * (8e18 - 6e18) / 1e18 + 0 = 200 T11
+    * Meaning: user earned 200 T11 since they entered the pool
+    * 
+    * @param account Address of the staker
+    * @return Total T11 rewards earned and pending claim
+    */
+    function earned(address account) public view returns (uint256) {
+        return s_balances[account] * (rewardPerToken() - s_userRewardPerTokenPaid[account]) / 1e18 + s_rewards[account];
+    }
+
+
+    
+}
 
 
 
