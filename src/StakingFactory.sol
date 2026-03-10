@@ -1,41 +1,35 @@
 // SPDX-License-Identifier: MIT
+
 pragma solidity ^0.8.20;
 
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+import {Tura11ERC20} from "./Tura11ERC20.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract StakingFactory {
-    error StakingFactory__ZeroAddress();
-    error StakingFactory__InvalidAmount(); 
+
+    error StakingFactory__AddressZero();
+    error StakingFactory__PoolAlreadyExists();
+
+    address public s_stakedToken;
+    Tura11ERC20 public rewardToken;
+    mapping(address => address) public s_pools;
     
-    address private s_owner;
+    
 
-
-    mapping(address=>mapping(address=>uint256)) public s_balancesForExactToken;
-    mapping(address=>uint256) public s_stakes;
-
-    uint256 public constant MAX_DEPOSIT = 10 ether;
-    uint256 public constant MAX_WITHDRAW = 20 ether;
-
-
-    constructor() {
-        s_owner = msg.sender; 
+    constructor(address _rewardToken) Ownable(msg.sender) {
+        rewardToken = Tura11ERC20(_rewardToken);
     }
 
-
-    function depositTokenToContract(address tokenAddress, uint256 amount) external {
-        if(tokenAddress == address(0)) {
-            revert StakingFactory__ZeroAddress();
+    function createPool(address _stakedToken) external onlyOwner {
+        if(s_stakedToken != address(0)) {
+            revert StakingFactory__AddressZero();
         }
-        if(amount == 0 || amount > MAX_DEPOSIT) {
-            revert StakingFactory__InvalidAmount();
+        if(s_pools[_stakedToken] != address(0)) {
+            revert StakingFactory__PoolAlreadyExists();
         }
-        
-        IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount);
-        s_balancesForExactToken[tokenAddress][msg.sender] += amount;
-        
+        s_stakedToken = _stakedToken;
     }
-
-
 
 
 }
