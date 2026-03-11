@@ -30,5 +30,11 @@ contract StakingPoolTest is Test {
         user1 = makeAddr("user1");
         user2 = makeAddr("user2");
     }
+
+
+    function testConstructor() public {
+        assertEq(address(stakeToken), pool.getStakeTokenAddress());
+        assertEq(address(rewardToken), pool.getRewardTokenAddress());
+    }
 }
 
