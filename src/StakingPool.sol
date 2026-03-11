@@ -12,8 +12,8 @@ import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol
 
 /// @title  StakingPool
 /// @author Tura11
-/// @notice A staking pool that allows users to stake any ERC20 token and earn T11 rewards.
-///         T11 is a proprietary ERC20 token — it is the sole reward asset distributed by this contract.
+/// @notice A staking pool that allows users to stake any ERC20 token and earn T11(Tura11) rewards.
+///         T11(Tura11) is a proprietary ERC20 token — it is the sole reward asset distributed by this contract.
 /// @dev    Implements the Synthetix staking rewards pattern with a global `rewardPerToken` accumulator.
 ///
 ///         ┌─────────────────────────────────────────────────────────────────────────┐
@@ -21,7 +21,7 @@ import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol
 ///         │                                                                         │
 ///         │  • Users deposit any ERC20 (stakeToken) and earn T11 (rewardToken).    │
 ///         │  • The owner funds reward periods via notifyRewardAmount().             │
-///         │  • Reward accounting is LAZY — state is only updated on user action.   │
+///         │  • Reward accounting  only updated on user action.   │
 ///         │  • A global accumulator (rewardPerTokenStored) tracks T11 earned per   │
 ///         │    staked token since inception. Per-user rewards are derived from      │
 ///         │    the delta between the current accumulator and the user's checkpoint. │
@@ -128,13 +128,6 @@ contract StakingPool is Ownable, ReentrancyGuard {
     /// @notice Snapshots the global reward accumulator and the specified user's pending rewards
     ///         before executing the decorated function.
     /// @dev    Must be applied to every function that reads or writes staking/reward state.
-    ///
-    ///         Execution order:
-    ///           1. Recompute and store the global rewardPerToken up to now.
-    ///           2. Advance s_lastUpdateTime to the current applicable timestamp.
-    ///           3. If account != address(0): flush earned() into s_rewards[account]
-    ///              and save the new accumulator as the user's checkpoint.
-    ///           4. Execute the decorated function body.
     ///
     ///         Passing address(0) skips the per-user update.
     ///         This is intentional — notifyRewardAmount() uses it to snapshot the
