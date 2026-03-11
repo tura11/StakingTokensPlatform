@@ -29,12 +29,48 @@ contract StakingPoolTest is Test {
         owner = address(this);
         user1 = makeAddr("user1");
         user2 = makeAddr("user2");
+
+        stakeToken.mint(owner, 1000);
+        rewardToken.mint(owner, 1000);
+
+
     }
 
 
     function testConstructor() public {
         assertEq(address(stakeToken), pool.getStakeTokenAddress());
         assertEq(address(rewardToken), pool.getRewardTokenAddress());
+    }
+
+
+        //STAKE FUNCTION//
+    function testStake() public {
+        vm.startPrank(user1);
+        stakeToken.mint(user1, 1000);
+        stakeToken.approve(address(pool), 1000);
+        pool.stake(1000);
+        assertEq(1000, stakeToken.balanceOf(address(pool)));
+        assertEq(pool.getUserBalance(user1), 1000);
+        assertEq(pool.getTotalSupply(), 1000);
+    }
+
+
+    function testStakeRevertIfAmountIsZero() public {
+        vm.startPrank(user1);
+        stakeToken.mint(user1, 1000);
+        stakeToken.approve(address(pool), 1000);
+        vm.expectRevert(StakingPool.StakingPool__InvalidAmount.selector);
+        pool.stake(0);
+
+    }
+
+    function testStakeEmitEvent() public {
+        vm.startPrank(user1);
+        stakeToken.mint(user1, 1000);
+        stakeToken.approve(address(pool), 1000);
+        vm.expectEmit(true,false,false,true);
+        emit  StakingPool.Staked(user1, 1000);
+        pool.stake(1000);
     }
 }
 
