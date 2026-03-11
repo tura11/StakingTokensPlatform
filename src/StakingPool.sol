@@ -5,7 +5,7 @@ pragma solidity ^0.8.20;
 // @author  Tura11
 // @notice  T11 is a proprietary ERC20 token used as the reward asset in this protocol.
 
-import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
+import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
@@ -390,10 +390,10 @@ contract StakingPool is Ownable, ReentrancyGuard {
     }
 
     function getRewardTokenAddress() public view returns (address) {
-        return s_RewardToken;
+        return address(s_RewardToken);
     }
 
     function getStakeTokenAddress() public view returns (address) {
-        return s_StakeToken;
+        return address(s_StakeToken);
     }
 }
