@@ -12,9 +12,12 @@ contract StakingPool is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     event Staked(address indexed user, uint256 amount);
+    event Withdrawn(address indexed user, uint256 amount);
+    event Claimed(address indexed user, uint256 amount);
 
     error StakingPool__AddressZero(address token);
     error StakingPool__InvalidAmount();
+    error StakingPool__BalanceTooLow();
 
 
     IERC20 s_StakeToken;
@@ -142,6 +145,32 @@ contract StakingPool is Ownable, ReentrancyGuard {
         s_totalSupply += amount;
         s_StakeToken.safeTransferFrom(msg.sender, address(this), amount);
         emit Staked(msg.sender, amount);
+    }
+
+
+    function withdraw(uint256 amount) external nonReentrant updateReward(msg.sender) {
+        if(amount == 0) {
+            revert StakingPool__InvalidAmount();
+        }
+        if(amount > s_balances[msg.sender]) {
+            revert StakingPool__BalanceTooLow();
+        } 
+        s_balances[msg.sender] -= amount;
+        s_totalSupply -= amount;
+        s_StakeToken.safeTransfer(msg.sender, amount);
+        emit Withdrawn(msg.sender, amount);
+    }
+
+
+    function claimReward() external nonReentrant updateReward(msg.sender) {
+        uint256 reward = s_rewards[msg.sender];
+        if(reward > 0){
+            s_rewards[msg.sender] = 0;
+            s_RewardToken.safeTransfer(msg.sender, reward);
+            emit Claimed(msg.sender, reward);
+        }
+        
+        
     }
 
 
