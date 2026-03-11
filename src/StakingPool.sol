@@ -46,6 +46,9 @@ contract StakingPool is Ownable, ReentrancyGuard {
     /// @notice Reserved error — SafeERC20 reverts directly on transfer failure.
     error StakingPool__TransferFailed();
 
+    /// @notice Revert if duration exceed 30 days;
+    error StakingPool__DurationTooLong();
+
     // =========================================================================
     // Events
     // =========================================================================
@@ -299,6 +302,9 @@ contract StakingPool is Ownable, ReentrancyGuard {
     /// @param  duration Length of the reward period in seconds.
     ///
     function notifyRewardAmount(uint256 reward, uint256 duration) external onlyOwner updateReward(address(0)) {
+        if(duration > 30 days) { // we set max duration to 30 days for safety
+            revert StakingPool__DurationTooLong();
+        }
         s_RewardToken.safeTransferFrom(msg.sender, address(this), reward);
         s_rewardPool += reward;
         if (block.timestamp >= s_periodFinish) {
@@ -349,53 +355,45 @@ contract StakingPool is Ownable, ReentrancyGuard {
     // Getters
     // =========================================================================
 
-    /// @notice Returns the staked token balance of `user`.
-    /// @param  user Address to query.
-    /// @return Current staked balance in stake token units.
     function getUserBalance(address user) public view returns (uint256) {
         return s_balances[user];
     }
 
-    /// @notice Returns the snapshotted unclaimed T11 reward balance of `user`.
-    /// @dev    Reflects the value written by the last updateReward call for this user.
-    ///         For the live (unsnapshotted) value, call earned(user) instead.
-    /// @param  user Address to query.
-    /// @return Last snapshotted T11 reward balance.
+
     function getUserReward(address user) public view returns (uint256) {
         return s_rewards[user];
     }
 
-    /// @notice Returns the rewardPerToken checkpoint stored for `user`.
-    /// @dev    This is the accumulator value at the user's last interaction.
-    ///         Used as the baseline in earned() to avoid retroactive reward accrual.
-    /// @param  user Address to query.
-    /// @return User's rewardPerToken checkpoint, scaled by 1e18.
+
     function getUserRewardPerTokenPaid(address user) public view returns (uint256) {
         return s_userRewardPerTokenPaid[user];
     }
 
-    /// @notice Returns the current live rewardPerToken accumulator value.
-    /// @dev    Thin wrapper around rewardPerToken(). Included for ABI clarity.
-    /// @return Live rewardPerToken value, scaled by 1e18.
+  
     function getRewardPerToken() public view returns (uint256) {
         return rewardPerToken();
     }
 
-    /// @notice Returns the current T11 emission rate.
-    /// @return T11 tokens emitted per second across all stakers.
+ 
     function getRewardRate() public view returns (uint256) {
         return s_rewardRate;
     }
 
-    /// @notice Returns the total amount of stake tokens currently deposited in the pool.
-    /// @return Sum of all user balances in stake token units.
+
     function getTotalSupply() public view returns (uint256) {
         return s_totalSupply;
     }
 
-    /// @notice Returns the timestamp at which the current reward period ends.
-    /// @return Unix timestamp of period expiry.
+
     function getPeriodFinish() public view returns (uint256) {
         return s_periodFinish;
+    }
+
+    function getRewardTokenAddress() public view returns (address) {
+        return s_RewardToken;
+    }
+
+    function getStakeTokenAddress() public view returns (address) {
+        return s_StakeToken;
     }
 }
