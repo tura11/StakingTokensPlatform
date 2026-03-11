@@ -11,15 +11,18 @@ import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol
 contract StakingPool is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    event Staked(address indexed user, uint256 amount);
-    event Withdrawn(address indexed user, uint256 amount);
-    event Claimed(address indexed user, uint256 amount);
-    event RewardAdded(uint256 reward, uint256 duration);
+    
 
     error StakingPool__AddressZero(address token);
     error StakingPool__InvalidAmount();
     error StakingPool__BalanceTooLow();
     error StakingPool__TransferFailed();
+
+
+    event Staked(address indexed user, uint256 amount);
+    event Withdrawn(address indexed user, uint256 amount);
+    event Claimed(address indexed user, uint256 amount);
+    event RewardAdded(uint256 reward, uint256 duration);
 
     IERC20 s_StakeToken;
     IERC20 s_RewardToken;
