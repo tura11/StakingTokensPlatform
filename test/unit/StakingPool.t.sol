@@ -111,5 +111,26 @@ contract StakingPoolTest is Test {
         emit  StakingPool.Withdrawn(user1, 500);
         pool.withdraw(500);
     }
+
+    function testEarnedAfterTime() public {
+        vm.startPrank(owner);
+        rewardToken.approve(address(pool), 1000);
+        pool.notifyRewardAmount(1000, 100);
+        uint256 rewardRate = pool.getRewardRate();
+        assertEq(rewardRate, 10); //  1000/100
+        vm.stopPrank();
+        vm.startPrank(user1);
+        pool.stake(1000);
+        uint256 userEarned = pool.earned(user1);
+        uint256 rewardPerTokenBefore = pool.rewardPerToken();
+        assertEq(userEarned, 0);
+        assertEq(rewardPerTokenBefore, 0); 
+        vm.warp(block.timestamp + 50);
+        uint256 rewardPerTokenAfter = pool.rewardPerToken();
+        uint256 userEarnedAfter = pool.earned(user1);
+        assertEq(userEarnedAfter, 500); // 1000 * 0.5e18 / 1e18 = 500
+        assertEq(rewardPerTokenAfter, 0.5e18); // 50 * 10 * 1e18 /1000;
+        vm.stopPrank();
+    }
 }
 
