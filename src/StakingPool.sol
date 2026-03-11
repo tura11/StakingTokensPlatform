@@ -19,7 +19,7 @@ contract StakingPool is Ownable, ReentrancyGuard {
     error StakingPool__AddressZero(address token);
     error StakingPool__InvalidAmount();
     error StakingPool__BalanceTooLow();
-
+    error StakingPool__TransferFailed();
 
     IERC20 s_StakeToken;
     IERC20 s_RewardToken;
@@ -194,5 +194,28 @@ contract StakingPool is Ownable, ReentrancyGuard {
         s_periodFinish = block.timestamp + duration;
         s_lastUpdateTime = block.timestamp;
         emit RewardAdded(reward, duration);
+    }
+
+
+    function emegrencyWithdraw() external {
+        uint256 balance = s_balances[msg.sender];
+        uint256 reward = s_rewards[msg.sender];
+        s_balances[msg.sender] = 0;
+        s_rewards[msg.sender] = 0;
+        s_totalSupply -= balance;
+        s_StakeToken.safeTransfer(msg.sender, balance);
+        emit Withdrawn(msg.sender, balance);
+    }
+
+    function emergencyWithdrawAll() external onlyOwner {
+        uint256 stakeBalance = s_StakeToken.balanceOf(address(this));
+        uint256 rewardBalance = s_RewardToken.balanceOf(address(this));
+        
+        if(stakeBalance > 0) {
+            s_StakeToken.safeTransfer(owner(), stakeBalance);
+        }
+        if(rewardBalance > 0) {
+            s_RewardToken.safeTransfer(owner(), rewardBalance);
+        }
     }
 }
