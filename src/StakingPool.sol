@@ -14,6 +14,7 @@ contract StakingPool is Ownable, ReentrancyGuard {
     event Staked(address indexed user, uint256 amount);
     event Withdrawn(address indexed user, uint256 amount);
     event Claimed(address indexed user, uint256 amount);
+    event RewardAdded(uint256 reward, uint256 duration);
 
     error StakingPool__AddressZero(address token);
     error StakingPool__InvalidAmount();
@@ -44,7 +45,7 @@ contract StakingPool is Ownable, ReentrancyGuard {
         s_userRewardPerTokenPaid[account] = s_rewardPerTokenStored;
     }
     _;
-
+    }
 
 
     constructor(address _stakeToken, address _rewardToken) Ownable(msg.sender) {
@@ -148,7 +149,7 @@ contract StakingPool is Ownable, ReentrancyGuard {
     }
 
 
-    function withdraw(uint256 amount) external nonReentrant updateReward(msg.sender) {
+    function withdraw(uint256 amount) public nonReentrant updateReward(msg.sender) {
         if(amount == 0) {
             revert StakingPool__InvalidAmount();
         }
@@ -162,21 +163,36 @@ contract StakingPool is Ownable, ReentrancyGuard {
     }
 
 
-    function claimReward() external nonReentrant updateReward(msg.sender) {
+    function claimReward() public nonReentrant updateReward(msg.sender) {
         uint256 reward = s_rewards[msg.sender];
         if(reward > 0){
             s_rewards[msg.sender] = 0;
             s_RewardToken.safeTransfer(msg.sender, reward);
             emit Claimed(msg.sender, reward);
-        }
-        
-        
+        }  
     }
 
 
-    
-}
+    function exit() external {
+        withdraw(s_balances[msg.sender]);
+        claimReward();
+    }
 
 
 
+    function notifyRewardAmount(uint256 reward, uint256 duration) external onlyOwner updateReward(address(0)) {
+        s_RewardToken.safeTransferFrom(msg.sender, address(this), reward);
+        s_rewardPool += reward;
+        if(block.timestamp >= s_periodFinish) {
+            s_rewardRate = reward / duration;
+        } else {
+            uint256 remaining = s_periodFinish - block.timestamp;
+            uint256 leftover = remaining * s_rewardRate;
+            s_rewardRate = (reward + leftover) / duration;
+        }
+
+        s_periodFinish = block.timestamp + duration;
+        s_lastUpdateTime = block.timestamp;
+        emit RewardAdded(reward, duration);
+    }
 }
