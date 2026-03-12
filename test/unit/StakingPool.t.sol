@@ -3,7 +3,7 @@
 pragma solidity ^0.8.20;
 
 
-import {Test} from "forge-std/Test.sol";
+import {Test, console} from "forge-std/Test.sol";
 import {StakingPool} from "../../src/StakingPool.sol";
 import {Tura11ERC20} from "../../src/Tura11ERC20.sol";
 import {ERC20Mock} from "openzeppelin-contracts/contracts/mocks/token/ERC20Mock.sol";
@@ -31,7 +31,6 @@ contract StakingPoolTest is Test {
         user2 = makeAddr("user2");
 
         stakeToken.mint(owner, 1000);
-        rewardToken.mint(owner, 1000);
 
         vm.startPrank(user1);
         stakeToken.mint(user1, 10000);
@@ -255,6 +254,88 @@ contract StakingPoolTest is Test {
         assertEq(pool.getUserReward(user1), 500);
         assertEq(pool.getUserRewardPerTokenPaid(user1), pool.getRewardPerToken()); 
         vm.stopPrank();
+    }
+
+
+    // ============================================================================
+    // EXIT TESTS
+    // ============================================================================
+
+
+    function testExit() public {
+        vm.startPrank(owner);
+        rewardToken.approve(address(pool), 1000);
+        pool.notifyRewardAmount(1000, 100);
+        vm.stopPrank();
+        vm.startPrank(user1);
+        pool.stake(1000);
+        vm.warp(block.timestamp + 50);
+        pool.exit();
+        assertEq(stakeToken.balanceOf(user1), 10000); //user1 mints 10000 stake tokens
+        assertEq(rewardToken.balanceOf(user1), 500);  //user1 gets 500 reward tokens
+    }
+
+    // ============================================================================
+    // EMERGENCY WITHDRAW TESTS
+    // ============================================================================
+    function testEmergencyWithdraw() public {
+        vm.startPrank(owner);
+        rewardToken.approve(address(pool), 1000);
+        pool.notifyRewardAmount(1000, 100);
+        vm.stopPrank();
+        vm.startPrank(user1);
+        pool.stake(1000);
+        vm.warp(block.timestamp + 50);
+        pool.emergencyWithdraw();
+        assertEq(stakeToken.balanceOf(user1), 10000); //user1 mints 10000 stake tokens
+        assertEq(rewardToken.balanceOf(user1), 0);  //user1 lost all reward tokens
+    }
+
+
+    function testEmergencyWithdrawAll() public {
+        vm.startPrank(owner);
+        rewardToken.approve(address(pool), 1000);
+        pool.notifyRewardAmount(1000, 100);
+        vm.stopPrank();
+        vm.prank(user1);
+        pool.stake(1000);
+        vm.prank(user2);
+        pool.stake(1000);
+        vm.warp(block.timestamp + 100); //500 rewards token user1, 500 rewards token user2, and 1000 stake token user1 and user2
+        console.log("rewardToken.balanceOf() = ", rewardToken.balanceOf(address(pool)));
+        vm.prank(owner);
+        pool.emergencyWithdrawAll();
+        assertEq(stakeToken.balanceOf(owner), 3000); //owner has  1000 stake tokens
+        assertEq(rewardToken.balanceOf(owner), 10000000 * 1e18);  //owner has  10000000 * 1e18 reward tokens minted from Tura11ERC20.sol
+    }
+
+    // ============================================================================
+    // NotifyRewardAmount TESTS
+    // ============================================================================
+
+    function testNotifyREwardAmountRevertsDurationTooLong() public {
+        vm.startPrank(owner);
+        rewardToken.approve(address(pool), 1000);
+        vm.expectRevert(StakingPool.StakingPool__DurationTooLong.selector);
+        pool.notifyRewardAmount(1000, 31 days);
+    }
+
+    function testNotifyRewardAmountBeforePeriodFinished() public {
+        vm.startPrank(owner);
+        rewardToken.approve(address(pool), 2000);
+        pool.notifyRewardAmount(1000, 100);
+        
+        vm.warp(block.timestamp + 50);
+
+        pool.notifyRewardAmount(1000, 100); 
+        assertEq(pool.getRewardRate(), 15);
+        vm.stopPrank();
+    }
+
+    function testNotifyRewardAmountRevertsIfNotOwner() public {
+        vm.prank(user1);
+        vm.expectRevert();
+        pool.notifyRewardAmount(1000, 100);
     }
 }
 
