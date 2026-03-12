@@ -52,6 +52,20 @@ contract StakingPoolTest is Test {
         assertEq(address(rewardToken), pool.getRewardTokenAddress());
     }
 
+    function testConstructorRevertIfStakeTokenIsZero() public {
+        vm.expectRevert(
+            abi.encodeWithSelector(StakingPool.StakingPool__AddressZero.selector, address(0))
+        );
+        new StakingPool(address(0), address(rewardToken));
+    }
+
+    function testConstructorRevertIfRewardTokenIsZero() public {
+        vm.expectRevert(
+            abi.encodeWithSelector(StakingPool.StakingPool__AddressZero.selector, address(0))
+        );
+        new StakingPool(address(stakeToken), address(0));
+    }
+
 
     // ============================================================================
     // STAKING TESTS
@@ -190,6 +204,36 @@ contract StakingPoolTest is Test {
         assertEq(pool.getUserReward(user1), 0);
         assertEq(rewardToken.balanceOf(user1), 500);
 
+    }
+
+
+
+
+    // ============================================================================
+    // lastTimeRewardApplicable TESTS
+    // ============================================================================
+
+    function testLastTimeRewardApplicableAfterPeriodEnd() public {
+        vm.startPrank(owner);
+        rewardToken.approve(address(pool), 1000);
+        pool.notifyRewardAmount(1000, 100); 
+        vm.stopPrank();
+
+        vm.warp(block.timestamp + 200); 
+
+        assertEq(pool.lastTimeRewardApplicable(), pool.getPeriodFinish());
+    }
+
+
+    function testLastTimeRewardApplicableDuringPeriod() public {
+        vm.startPrank(owner);
+        rewardToken.approve(address(pool), 1000);
+        pool.notifyRewardAmount(1000, 100);
+        vm.stopPrank();
+
+        vm.warp(block.timestamp + 50); 
+
+        assertEq(pool.lastTimeRewardApplicable(), block.timestamp);
     }
 }
 
