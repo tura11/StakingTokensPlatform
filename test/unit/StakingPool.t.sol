@@ -39,6 +39,11 @@ contract StakingPoolTest is Test {
         vm.stopPrank();
 
 
+        vm.startPrank(user2);
+        stakeToken.mint(user2, 10000);
+        stakeToken.approve(address(pool), 10000);
+        vm.stopPrank();
+
     }
 
 
@@ -112,6 +117,10 @@ contract StakingPoolTest is Test {
         pool.withdraw(500);
     }
 
+    // ============================================================================
+    // MATH TIME
+    // ============================================================================
+
     function testEarnedAfterTime() public {
         vm.startPrank(owner);
         rewardToken.approve(address(pool), 1000);
@@ -131,6 +140,56 @@ contract StakingPoolTest is Test {
         assertEq(userEarnedAfter, 500); // 1000 * 0.5e18 / 1e18 = 500
         assertEq(rewardPerTokenAfter, 0.5e18); // 50 * 10 * 1e18 /1000;
         vm.stopPrank();
+    }
+
+
+
+    function testUsersEarnProportionaly() public {
+        vm.startPrank(owner);
+        rewardToken.approve(address(pool), 1000);
+        pool.notifyRewardAmount(1000, 100); // 10 t11 per second
+        vm.stopPrank();
+        vm.prank(user1);
+        pool.stake(250); // 25% shares
+        vm.prank(user2);
+        pool.stake(750); // 75% shares 
+
+        vm.warp(block.timestamp + 50);
+
+
+        uint256 user1Earned = pool.earned(user1); //  250 * 0.5e18 / 1e18 = 125
+        uint256 user2Earned = pool.earned(user2); //  750 * 0.5e18 / 1e18 = 375
+        assertEq(user1Earned, 125);
+        assertEq(user2Earned, 375);
+    }
+
+
+    // ============================================================================
+    // CLAIM REWARD TESTS
+    // ============================================================================
+
+
+
+    function testClaimReward() public {
+        vm.startPrank(owner);
+        rewardToken.approve(address(pool), 1000);
+        pool.notifyRewardAmount(1000, 100);
+        vm.stopPrank();
+
+        vm.startPrank(user1);
+        pool.stake(1000);
+
+        vm.warp(block.timestamp + 50);
+
+        uint256 userRewards = pool.earned(user1);
+
+        assertEq(userRewards, 500);
+
+        pool.claimReward();
+
+        assertEq(pool.getUserReward(user1), 0);
+        assertEq(rewardToken.balanceOf(user1), 500);
+
     }
 }
 
