@@ -235,5 +235,26 @@ contract StakingPoolTest is Test {
 
         assertEq(pool.lastTimeRewardApplicable(), block.timestamp);
     }
+
+
+    // ============================================================================
+    // MODIFIER TESTS
+    // ============================================================================
+
+    function testUpdateRewardModifierUpdatesUserState() public {
+        vm.startPrank(owner);
+        rewardToken.approve(address(pool), 1000);
+        pool.notifyRewardAmount(1000, 100);
+        vm.stopPrank();
+
+        vm.startPrank(user1);
+        pool.stake(1000);
+        vm.warp(block.timestamp + 50);
+        pool.stake(1); 
+
+        assertEq(pool.getUserReward(user1), 500);
+        assertEq(pool.getUserRewardPerTokenPaid(user1), pool.getRewardPerToken()); 
+        vm.stopPrank();
+    }
 }
 

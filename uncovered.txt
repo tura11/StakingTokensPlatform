@@ -1,5 +1,5 @@
 Compiling 37 files with Solc 0.8.30
-Solc 0.8.30 finished in 582.60ms
+Solc 0.8.30 finished in 604.10ms
 Compiler run successful with warnings:
 Warning (2018): Function state mutability can be restricted to view
   --> test/unit/StakingPool.t.sol:50:5:
@@ -10,24 +10,25 @@ Warning (2018): Function state mutability can be restricted to view
 Analysing contracts...
 Running tests...
 
-Ran 14 tests for test/unit/StakingPool.t.sol:StakingPoolTest
-[PASS] testClaimReward() (gas: 339907)
-[PASS] testConstructor() (gas: 15683)
+Ran 15 tests for test/unit/StakingPool.t.sol:StakingPoolTest
+[PASS] testClaimReward() (gas: 339929)
+[PASS] testConstructor() (gas: 15705)
 [PASS] testConstructorRevertIfRewardTokenIsZero() (gas: 87785)
 [PASS] testConstructorRevertIfStakeTokenIsZero() (gas: 87657)
-[PASS] testEarnedAfterTime() (gas: 272842)
+[PASS] testEarnedAfterTime() (gas: 272797)
+[PASS] testLastTimeRewardApplicableAfterPeriodEnd() (gas: 158311)
+[PASS] testLastTimeRewardApplicableDuringPeriod() (gas: 157099)
 [PASS] testStake() (gas: 122738)
 [PASS] testStakeEmitEvent() (gas: 118326)
-[PASS] testStakeRevertIfAmountIsZero() (gas: 35019)
-[PASS] testUpdateRewardModifierUpdatesState() (gas: 338452)
-[PASS] testUsersEarnProportionaly() (gas: 319574)
-[PASS] testWithdraw() (gas: 139991)
-[PASS] testWithdrawEmitEvent() (gas: 135582)
-[PASS] testWithdrawRevertIfBalanceTooLow() (gas: 129164)
-[PASS] testWithdrawRevertInvalidAmount() (gas: 128927)
-Suite result: ok. 14 passed; 0 failed; 0 skipped; finished in 4.90ms (31.96ms CPU time)
+[PASS] testStakeRevertIfAmountIsZero() (gas: 35042)
+[PASS] testUsersEarnProportionaly() (gas: 319597)
+[PASS] testWithdraw() (gas: 139946)
+[PASS] testWithdrawEmitEvent() (gas: 135538)
+[PASS] testWithdrawRevertIfBalanceTooLow() (gas: 129186)
+[PASS] testWithdrawRevertInvalidAmount() (gas: 128949)
+Suite result: ok. 15 passed; 0 failed; 0 skipped; finished in 4.88ms (29.37ms CPU time)
 
-Ran 1 test suite in 11.16ms (4.90ms CPU time): 14 tests passed, 0 failed, 0 skipped (14 total tests)
+Ran 1 test suite in 7.67ms (4.88ms CPU time): 15 tests passed, 0 failed, 0 skipped (15 total tests)
 src/StakingFactory.sol:
 - Line (location: (source ID: 33, lines: 79..83, bytes: 2960..3148), hits: 0) -> "constructor(address _rewardToken...Tura11ERC20(_rewardToken);\n    }"
 - Function "constructor" (location: (source ID: 33, lines: 79..83, bytes: 2960..3148), hits: 0) -> "constructor(address _rewardToken...Tura11ERC20(_rewardToken);\n    }"
@@ -70,79 +71,79 @@ src/StakingFactory.sol:
 - Statement (location: (source ID: 33, lines: 129..130, bytes: 5207..5224), hits: 0) -> "return s_allPools"
 
 src/StakingPool.sol:
-- Line (location: (source ID: 34, lines: 139..148, bytes: 7526..7858), hits: 4) -> "modifier updateReward(address ac...ored;\n        }\n        _;\n    }"
-- Function "updateReward" (location: (source ID: 34, lines: 139..148, bytes: 7526..7858), hits: 4) -> "modifier updateReward(address ac...ored;\n        }\n        _;\n    }"
-- Line (location: (source ID: 34, lines: 140..141, bytes: 7575..7616), hits: 4) -> "s_rewardPerTokenStored = rewardPerToken()"
-- Statement (location: (source ID: 34, lines: 140..141, bytes: 7575..7616), hits: 4) -> "s_rewardPerTokenStored = rewardPerToken()"
-- Line (location: (source ID: 34, lines: 141..142, bytes: 7626..7671), hits: 4) -> "s_lastUpdateTime = lastTimeRewardApplicable()"
-- Statement (location: (source ID: 34, lines: 141..142, bytes: 7626..7671), hits: 4) -> "s_lastUpdateTime = lastTimeRewardApplicable()"
-- Line (location: (source ID: 34, lines: 142..143, bytes: 7685..7706), hits: 4) -> "account != address(0)"
-- Statement (location: (source ID: 34, lines: 142..143, bytes: 7685..7706), hits: 4) -> "account != address(0)"
+- Line (location: (source ID: 34, lines: 139..148, bytes: 7526..7858), hits: 5) -> "modifier updateReward(address ac...ored;\n        }\n        _;\n    }"
+- Function "updateReward" (location: (source ID: 34, lines: 139..148, bytes: 7526..7858), hits: 5) -> "modifier updateReward(address ac...ored;\n        }\n        _;\n    }"
+- Line (location: (source ID: 34, lines: 140..141, bytes: 7575..7616), hits: 5) -> "s_rewardPerTokenStored = rewardPerToken()"
+- Statement (location: (source ID: 34, lines: 140..141, bytes: 7575..7616), hits: 5) -> "s_rewardPerTokenStored = rewardPerToken()"
+- Line (location: (source ID: 34, lines: 141..142, bytes: 7626..7671), hits: 5) -> "s_lastUpdateTime = lastTimeRewardApplicable()"
+- Statement (location: (source ID: 34, lines: 141..142, bytes: 7626..7671), hits: 5) -> "s_lastUpdateTime = lastTimeRewardApplicable()"
+- Line (location: (source ID: 34, lines: 142..143, bytes: 7685..7706), hits: 5) -> "account != address(0)"
+- Statement (location: (source ID: 34, lines: 142..143, bytes: 7685..7706), hits: 5) -> "account != address(0)"
 - Branch (branch: 0, path: 0) (location: (source ID: 34, lines: 142..146, bytes: 7708..7841), hits: 0) -> "{\n            s_rewards[account]..._rewardPerTokenStored;\n        }"
 - Line (location: (source ID: 34, lines: 143..144, bytes: 7722..7758), hits: 0) -> "s_rewards[account] = earned(account)"
 - Statement (location: (source ID: 34, lines: 143..144, bytes: 7722..7758), hits: 0) -> "s_rewards[account] = earned(account)"
 - Line (location: (source ID: 34, lines: 144..145, bytes: 7772..7830), hits: 0) -> "s_userRewardPerTokenPaid[account] = s_rewardPerTokenStored"
 - Statement (location: (source ID: 34, lines: 144..145, bytes: 7772..7830), hits: 0) -> "s_userRewardPerTokenPaid[account] = s_rewardPerTokenStored"
-- Line (location: (source ID: 34, lines: 160..166, bytes: 8570..8914), hits: 16) -> "constructor(address _stakeToken,...en = IERC20(_rewardToken);\n    }"
-- Function "constructor" (location: (source ID: 34, lines: 160..166, bytes: 8570..8914), hits: 16) -> "constructor(address _stakeToken,...en = IERC20(_rewardToken);\n    }"
-- Line (location: (source ID: 34, lines: 161..162, bytes: 8659..8684), hits: 16) -> "_stakeToken == address(0)"
-- Statement (location: (source ID: 34, lines: 161..162, bytes: 8659..8684), hits: 16) -> "_stakeToken == address(0)"
+- Line (location: (source ID: 34, lines: 160..166, bytes: 8570..8914), hits: 17) -> "constructor(address _stakeToken,...en = IERC20(_rewardToken);\n    }"
+- Function "constructor" (location: (source ID: 34, lines: 160..166, bytes: 8570..8914), hits: 17) -> "constructor(address _stakeToken,...en = IERC20(_rewardToken);\n    }"
+- Line (location: (source ID: 34, lines: 161..162, bytes: 8659..8684), hits: 17) -> "_stakeToken == address(0)"
+- Statement (location: (source ID: 34, lines: 161..162, bytes: 8659..8684), hits: 17) -> "_stakeToken == address(0)"
 - Statement (location: (source ID: 34, lines: 161..162, bytes: 8686..8730), hits: 1) -> "revert StakingPool__AddressZero(_stakeToken)"
 - Branch (branch: 1, path: 0) (location: (source ID: 34, lines: 161..162, bytes: 8686..8730), hits: 1) -> "revert StakingPool__AddressZero(_stakeToken)"
-- Line (location: (source ID: 34, lines: 162..163, bytes: 8744..8770), hits: 15) -> "_rewardToken == address(0)"
-- Statement (location: (source ID: 34, lines: 162..163, bytes: 8744..8770), hits: 15) -> "_rewardToken == address(0)"
+- Line (location: (source ID: 34, lines: 162..163, bytes: 8744..8770), hits: 16) -> "_rewardToken == address(0)"
+- Statement (location: (source ID: 34, lines: 162..163, bytes: 8744..8770), hits: 16) -> "_rewardToken == address(0)"
 - Statement (location: (source ID: 34, lines: 162..163, bytes: 8772..8817), hits: 1) -> "revert StakingPool__AddressZero(_rewardToken)"
 - Branch (branch: 2, path: 0) (location: (source ID: 34, lines: 162..163, bytes: 8772..8817), hits: 1) -> "revert StakingPool__AddressZero(_rewardToken)"
-- Line (location: (source ID: 34, lines: 163..164, bytes: 8827..8861), hits: 14) -> "s_StakeToken = IERC20(_stakeToken)"
-- Statement (location: (source ID: 34, lines: 163..164, bytes: 8827..8861), hits: 14) -> "s_StakeToken = IERC20(_stakeToken)"
-- Line (location: (source ID: 34, lines: 164..165, bytes: 8871..8907), hits: 14) -> "s_RewardToken = IERC20(_rewardToken)"
-- Statement (location: (source ID: 34, lines: 164..165, bytes: 8871..8907), hits: 14) -> "s_RewardToken = IERC20(_rewardToken)"
-- Line (location: (source ID: 34, lines: 176..183, bytes: 9512..9731), hits: 0) -> "function lastTimeRewardApplicabl...block.timestamp;\n        }\n    }"
-- Function "lastTimeRewardApplicable" (location: (source ID: 34, lines: 176..183, bytes: 9512..9731), hits: 0) -> "function lastTimeRewardApplicabl...block.timestamp;\n        }\n    }"
-- Line (location: (source ID: 34, lines: 177..178, bytes: 9592..9624), hits: 70) -> "s_periodFinish < block.timestamp"
-- Statement (location: (source ID: 34, lines: 177..178, bytes: 9592..9624), hits: 70) -> "s_periodFinish < block.timestamp"
-- Branch (branch: 3, path: 0) (location: (source ID: 34, lines: 177..180, bytes: 9626..9672), hits: 41) -> "{\n            return s_periodFinish;\n        }"
-- Branch (branch: 3, path: 1) (location: (source ID: 34, lines: 177..182, bytes: 9588..9725), hits: 29) -> "if (s_periodFinish < block.times...eturn block.timestamp;\n        }"
-- Line (location: (source ID: 34, lines: 178..179, bytes: 9640..9661), hits: 41) -> "return s_periodFinish"
-- Statement (location: (source ID: 34, lines: 178..179, bytes: 9640..9661), hits: 41) -> "return s_periodFinish"
-- Line (location: (source ID: 34, lines: 180..181, bytes: 9692..9714), hits: 29) -> "return block.timestamp"
-- Statement (location: (source ID: 34, lines: 180..181, bytes: 9692..9714), hits: 29) -> "return block.timestamp"
+- Line (location: (source ID: 34, lines: 163..164, bytes: 8827..8861), hits: 15) -> "s_StakeToken = IERC20(_stakeToken)"
+- Statement (location: (source ID: 34, lines: 163..164, bytes: 8827..8861), hits: 15) -> "s_StakeToken = IERC20(_stakeToken)"
+- Line (location: (source ID: 34, lines: 164..165, bytes: 8871..8907), hits: 15) -> "s_RewardToken = IERC20(_rewardToken)"
+- Statement (location: (source ID: 34, lines: 164..165, bytes: 8871..8907), hits: 15) -> "s_RewardToken = IERC20(_rewardToken)"
+- Line (location: (source ID: 34, lines: 176..183, bytes: 9512..9731), hits: 2) -> "function lastTimeRewardApplicabl...block.timestamp;\n        }\n    }"
+- Function "lastTimeRewardApplicable" (location: (source ID: 34, lines: 176..183, bytes: 9512..9731), hits: 2) -> "function lastTimeRewardApplicabl...block.timestamp;\n        }\n    }"
+- Line (location: (source ID: 34, lines: 177..178, bytes: 9592..9624), hits: 67) -> "s_periodFinish < block.timestamp"
+- Statement (location: (source ID: 34, lines: 177..178, bytes: 9592..9624), hits: 67) -> "s_periodFinish < block.timestamp"
+- Branch (branch: 3, path: 0) (location: (source ID: 34, lines: 177..180, bytes: 9626..9672), hits: 44) -> "{\n            return s_periodFinish;\n        }"
+- Branch (branch: 3, path: 1) (location: (source ID: 34, lines: 177..182, bytes: 9588..9725), hits: 23) -> "if (s_periodFinish < block.times...eturn block.timestamp;\n        }"
+- Line (location: (source ID: 34, lines: 178..179, bytes: 9640..9661), hits: 44) -> "return s_periodFinish"
+- Statement (location: (source ID: 34, lines: 178..179, bytes: 9640..9661), hits: 44) -> "return s_periodFinish"
+- Line (location: (source ID: 34, lines: 180..181, bytes: 9692..9714), hits: 23) -> "return block.timestamp"
+- Statement (location: (source ID: 34, lines: 180..181, bytes: 9692..9714), hits: 23) -> "return block.timestamp"
 - Line (location: (source ID: 34, lines: 199..207, bytes: 10530..10867), hits: 2) -> "function rewardPerToken() public... s_totalSupply);\n        }\n    }"
 - Function "rewardPerToken" (location: (source ID: 34, lines: 199..207, bytes: 10530..10867), hits: 2) -> "function rewardPerToken() public... s_totalSupply);\n        }\n    }"
-- Line (location: (source ID: 34, lines: 200..201, bytes: 10596..10661), hits: 48) -> "uint256 timeDelta = lastTimeRewa...dApplicable() - s_lastUpdateTime"
-- Statement (location: (source ID: 34, lines: 200..201, bytes: 10596..10661), hits: 48) -> "uint256 timeDelta = lastTimeRewa...dApplicable() - s_lastUpdateTime"
-- Statement (location: (source ID: 34, lines: 200..201, bytes: 10616..10642), hits: 48) -> "lastTimeRewardApplicable()"
-- Statement (location: (source ID: 34, lines: 200..201, bytes: 10616..10661), hits: 48) -> "lastTimeRewardApplicable() - s_lastUpdateTime"
-- Line (location: (source ID: 34, lines: 201..202, bytes: 10675..10693), hits: 48) -> "s_totalSupply == 0"
-- Statement (location: (source ID: 34, lines: 201..202, bytes: 10675..10693), hits: 48) -> "s_totalSupply == 0"
-- Branch (branch: 4, path: 0) (location: (source ID: 34, lines: 201..204, bytes: 10695..10749), hits: 26) -> "{\n            return s_rewardPerTokenStored;\n        }"
-- Branch (branch: 4, path: 1) (location: (source ID: 34, lines: 201..206, bytes: 10671..10861), hits: 22) -> "if (s_totalSupply == 0) {\n      ...1e18 / s_totalSupply);\n        }"
-- Line (location: (source ID: 34, lines: 202..203, bytes: 10709..10738), hits: 26) -> "return s_rewardPerTokenStored"
-- Statement (location: (source ID: 34, lines: 202..203, bytes: 10709..10738), hits: 26) -> "return s_rewardPerTokenStored"
-- Line (location: (source ID: 34, lines: 204..205, bytes: 10769..10850), hits: 22) -> "return s_rewardPerTokenStored + ...wardRate * 1e18 / s_totalSupply)"
-- Statement (location: (source ID: 34, lines: 204..205, bytes: 10769..10850), hits: 22) -> "return s_rewardPerTokenStored + ...wardRate * 1e18 / s_totalSupply)"
-- Statement (location: (source ID: 34, lines: 204..205, bytes: 10776..10850), hits: 22) -> "s_rewardPerTokenStored + (timeDe...wardRate * 1e18 / s_totalSupply)"
+- Line (location: (source ID: 34, lines: 200..201, bytes: 10596..10661), hits: 44) -> "uint256 timeDelta = lastTimeRewa...dApplicable() - s_lastUpdateTime"
+- Statement (location: (source ID: 34, lines: 200..201, bytes: 10596..10661), hits: 44) -> "uint256 timeDelta = lastTimeRewa...dApplicable() - s_lastUpdateTime"
+- Statement (location: (source ID: 34, lines: 200..201, bytes: 10616..10642), hits: 44) -> "lastTimeRewardApplicable()"
+- Statement (location: (source ID: 34, lines: 200..201, bytes: 10616..10661), hits: 44) -> "lastTimeRewardApplicable() - s_lastUpdateTime"
+- Line (location: (source ID: 34, lines: 201..202, bytes: 10675..10693), hits: 44) -> "s_totalSupply == 0"
+- Statement (location: (source ID: 34, lines: 201..202, bytes: 10675..10693), hits: 44) -> "s_totalSupply == 0"
+- Branch (branch: 4, path: 0) (location: (source ID: 34, lines: 201..204, bytes: 10695..10749), hits: 25) -> "{\n            return s_rewardPerTokenStored;\n        }"
+- Branch (branch: 4, path: 1) (location: (source ID: 34, lines: 201..206, bytes: 10671..10861), hits: 19) -> "if (s_totalSupply == 0) {\n      ...1e18 / s_totalSupply);\n        }"
+- Line (location: (source ID: 34, lines: 202..203, bytes: 10709..10738), hits: 25) -> "return s_rewardPerTokenStored"
+- Statement (location: (source ID: 34, lines: 202..203, bytes: 10709..10738), hits: 25) -> "return s_rewardPerTokenStored"
+- Line (location: (source ID: 34, lines: 204..205, bytes: 10769..10850), hits: 19) -> "return s_rewardPerTokenStored + ...wardRate * 1e18 / s_totalSupply)"
+- Statement (location: (source ID: 34, lines: 204..205, bytes: 10769..10850), hits: 19) -> "return s_rewardPerTokenStored + ...wardRate * 1e18 / s_totalSupply)"
+- Statement (location: (source ID: 34, lines: 204..205, bytes: 10776..10850), hits: 19) -> "s_rewardPerTokenStored + (timeDe...wardRate * 1e18 / s_totalSupply)"
 - Line (location: (source ID: 34, lines: 224..227, bytes: 11685..11876), hits: 5) -> "function earned(address account)...1e18 + s_rewards[account];\n    }"
 - Function "earned" (location: (source ID: 34, lines: 224..227, bytes: 11685..11876), hits: 5) -> "function earned(address account)...1e18 + s_rewards[account];\n    }"
-- Line (location: (source ID: 34, lines: 225..226, bytes: 11758..11869), hits: 23) -> "return s_balances[account] * (re...nt]) / 1e18 + s_rewards[account]"
-- Statement (location: (source ID: 34, lines: 225..226, bytes: 11758..11869), hits: 23) -> "return s_balances[account] * (re...nt]) / 1e18 + s_rewards[account]"
-- Statement (location: (source ID: 34, lines: 225..226, bytes: 11765..11841), hits: 23) -> "s_balances[account] * (rewardPer...userRewardPerTokenPaid[account])"
-- Statement (location: (source ID: 34, lines: 225..226, bytes: 11765..11848), hits: 23) -> "s_balances[account] * (rewardPer...ardPerTokenPaid[account]) / 1e18"
-- Statement (location: (source ID: 34, lines: 225..226, bytes: 11765..11869), hits: 23) -> "s_balances[account] * (rewardPer...nt]) / 1e18 + s_rewards[account]"
-- Line (location: (source ID: 34, lines: 239..246, bytes: 12513..12850), hits: 13) -> "function stake(uint256 amount) e...taked(msg.sender, amount);\n    }"
-- Function "stake" (location: (source ID: 34, lines: 239..246, bytes: 12513..12850), hits: 13) -> "function stake(uint256 amount) e...taked(msg.sender, amount);\n    }"
-- Line (location: (source ID: 34, lines: 240..241, bytes: 12605..12616), hits: 13) -> "amount == 0"
-- Statement (location: (source ID: 34, lines: 240..241, bytes: 12605..12616), hits: 13) -> "amount == 0"
+- Line (location: (source ID: 34, lines: 225..226, bytes: 11758..11869), hits: 21) -> "return s_balances[account] * (re...nt]) / 1e18 + s_rewards[account]"
+- Statement (location: (source ID: 34, lines: 225..226, bytes: 11758..11869), hits: 21) -> "return s_balances[account] * (re...nt]) / 1e18 + s_rewards[account]"
+- Statement (location: (source ID: 34, lines: 225..226, bytes: 11765..11841), hits: 21) -> "s_balances[account] * (rewardPer...userRewardPerTokenPaid[account])"
+- Statement (location: (source ID: 34, lines: 225..226, bytes: 11765..11848), hits: 21) -> "s_balances[account] * (rewardPer...ardPerTokenPaid[account]) / 1e18"
+- Statement (location: (source ID: 34, lines: 225..226, bytes: 11765..11869), hits: 21) -> "s_balances[account] * (rewardPer...nt]) / 1e18 + s_rewards[account]"
+- Line (location: (source ID: 34, lines: 239..246, bytes: 12513..12850), hits: 11) -> "function stake(uint256 amount) e...taked(msg.sender, amount);\n    }"
+- Function "stake" (location: (source ID: 34, lines: 239..246, bytes: 12513..12850), hits: 11) -> "function stake(uint256 amount) e...taked(msg.sender, amount);\n    }"
+- Line (location: (source ID: 34, lines: 240..241, bytes: 12605..12616), hits: 11) -> "amount == 0"
+- Statement (location: (source ID: 34, lines: 240..241, bytes: 12605..12616), hits: 11) -> "amount == 0"
 - Statement (location: (source ID: 34, lines: 240..241, bytes: 12618..12653), hits: 1) -> "revert StakingPool__InvalidAmount()"
 - Branch (branch: 5, path: 0) (location: (source ID: 34, lines: 240..241, bytes: 12618..12653), hits: 1) -> "revert StakingPool__InvalidAmount()"
-- Line (location: (source ID: 34, lines: 241..242, bytes: 12663..12695), hits: 12) -> "s_balances[msg.sender] += amount"
-- Statement (location: (source ID: 34, lines: 241..242, bytes: 12663..12695), hits: 12) -> "s_balances[msg.sender] += amount"
-- Line (location: (source ID: 34, lines: 242..243, bytes: 12705..12728), hits: 12) -> "s_totalSupply += amount"
-- Statement (location: (source ID: 34, lines: 242..243, bytes: 12705..12728), hits: 12) -> "s_totalSupply += amount"
-- Line (location: (source ID: 34, lines: 243..244, bytes: 12738..12802), hits: 12) -> "s_StakeToken.safeTransferFrom(msg.sender, address(this), amount)"
-- Statement (location: (source ID: 34, lines: 243..244, bytes: 12738..12802), hits: 12) -> "s_StakeToken.safeTransferFrom(msg.sender, address(this), amount)"
-- Line (location: (source ID: 34, lines: 244..245, bytes: 12812..12843), hits: 12) -> "emit Staked(msg.sender, amount)"
-- Statement (location: (source ID: 34, lines: 244..245, bytes: 12812..12843), hits: 12) -> "emit Staked(msg.sender, amount)"
+- Line (location: (source ID: 34, lines: 241..242, bytes: 12663..12695), hits: 10) -> "s_balances[msg.sender] += amount"
+- Statement (location: (source ID: 34, lines: 241..242, bytes: 12663..12695), hits: 10) -> "s_balances[msg.sender] += amount"
+- Line (location: (source ID: 34, lines: 242..243, bytes: 12705..12728), hits: 10) -> "s_totalSupply += amount"
+- Statement (location: (source ID: 34, lines: 242..243, bytes: 12705..12728), hits: 10) -> "s_totalSupply += amount"
+- Line (location: (source ID: 34, lines: 243..244, bytes: 12738..12802), hits: 10) -> "s_StakeToken.safeTransferFrom(msg.sender, address(this), amount)"
+- Statement (location: (source ID: 34, lines: 243..244, bytes: 12738..12802), hits: 10) -> "s_StakeToken.safeTransferFrom(msg.sender, address(this), amount)"
+- Line (location: (source ID: 34, lines: 244..245, bytes: 12812..12843), hits: 10) -> "emit Staked(msg.sender, amount)"
+- Statement (location: (source ID: 34, lines: 244..245, bytes: 12812..12843), hits: 10) -> "emit Staked(msg.sender, amount)"
 - Line (location: (source ID: 34, lines: 254..258, bytes: 13315..13412), hits: 0) -> "function exit() external {\n     ...]);\n        claimReward();\n    }"
 - Function "exit" (location: (source ID: 34, lines: 254..258, bytes: 13315..13412), hits: 0) -> "function exit() external {\n     ...]);\n        claimReward();\n    }"
 - Line (location: (source ID: 34, lines: 255..256, bytes: 13350..13382), hits: 0) -> "withdraw(s_balances[msg.sender])"
@@ -179,23 +180,23 @@ src/StakingPool.sol:
 - Statement (location: (source ID: 34, lines: 289..290, bytes: 15234..15251), hits: 0) -> "rewardBalance > 0"
 - Statement (location: (source ID: 34, lines: 289..290, bytes: 15253..15303), hits: 0) -> "s_RewardToken.safeTransfer(owner(), rewardBalance)"
 - Branch (branch: 7, path: 0) (location: (source ID: 34, lines: 289..290, bytes: 15253..15303), hits: 0) -> "s_RewardToken.safeTransfer(owner(), rewardBalance)"
-- Line (location: (source ID: 34, lines: 304..321, bytes: 16003..16807), hits: 4) -> "function notifyRewardAmount(uint...rdAdded(reward, duration);\n    }"
-- Function "notifyRewardAmount" (location: (source ID: 34, lines: 304..321, bytes: 16003..16807), hits: 4) -> "function notifyRewardAmount(uint...rdAdded(reward, duration);\n    }"
-- Line (location: (source ID: 34, lines: 305..306, bytes: 16122..16140), hits: 4) -> "duration > 30 days"
-- Statement (location: (source ID: 34, lines: 305..306, bytes: 16122..16140), hits: 4) -> "duration > 30 days"
+- Line (location: (source ID: 34, lines: 304..321, bytes: 16003..16807), hits: 5) -> "function notifyRewardAmount(uint...rdAdded(reward, duration);\n    }"
+- Function "notifyRewardAmount" (location: (source ID: 34, lines: 304..321, bytes: 16003..16807), hits: 5) -> "function notifyRewardAmount(uint...rdAdded(reward, duration);\n    }"
+- Line (location: (source ID: 34, lines: 305..306, bytes: 16122..16140), hits: 5) -> "duration > 30 days"
+- Statement (location: (source ID: 34, lines: 305..306, bytes: 16122..16140), hits: 5) -> "duration > 30 days"
 - Branch (branch: 8, path: 0) (location: (source ID: 34, lines: 305..308, bytes: 16142..16249), hits: 0) -> "{ // we set max duration to 30 d...ol__DurationTooLong();\n        }"
 - Line (location: (source ID: 34, lines: 306..307, bytes: 16201..16238), hits: 0) -> "revert StakingPool__DurationTooLong()"
 - Statement (location: (source ID: 34, lines: 306..307, bytes: 16201..16238), hits: 0) -> "revert StakingPool__DurationTooLong()"
-- Line (location: (source ID: 34, lines: 308..309, bytes: 16258..16323), hits: 4) -> "s_RewardToken.safeTransferFrom(m...g.sender, address(this), reward)"
-- Statement (location: (source ID: 34, lines: 308..309, bytes: 16258..16323), hits: 4) -> "s_RewardToken.safeTransferFrom(m...g.sender, address(this), reward)"
-- Line (location: (source ID: 34, lines: 309..310, bytes: 16333..16355), hits: 4) -> "s_rewardPool += reward"
-- Statement (location: (source ID: 34, lines: 309..310, bytes: 16333..16355), hits: 4) -> "s_rewardPool += reward"
-- Line (location: (source ID: 34, lines: 310..311, bytes: 16369..16402), hits: 4) -> "block.timestamp >= s_periodFinish"
-- Statement (location: (source ID: 34, lines: 310..311, bytes: 16369..16402), hits: 4) -> "block.timestamp >= s_periodFinish"
-- Branch (branch: 9, path: 0) (location: (source ID: 34, lines: 310..313, bytes: 16404..16461), hits: 4) -> "{\n            s_rewardRate = reward / duration;\n        }"
+- Line (location: (source ID: 34, lines: 308..309, bytes: 16258..16323), hits: 5) -> "s_RewardToken.safeTransferFrom(m...g.sender, address(this), reward)"
+- Statement (location: (source ID: 34, lines: 308..309, bytes: 16258..16323), hits: 5) -> "s_RewardToken.safeTransferFrom(m...g.sender, address(this), reward)"
+- Line (location: (source ID: 34, lines: 309..310, bytes: 16333..16355), hits: 5) -> "s_rewardPool += reward"
+- Statement (location: (source ID: 34, lines: 309..310, bytes: 16333..16355), hits: 5) -> "s_rewardPool += reward"
+- Line (location: (source ID: 34, lines: 310..311, bytes: 16369..16402), hits: 5) -> "block.timestamp >= s_periodFinish"
+- Statement (location: (source ID: 34, lines: 310..311, bytes: 16369..16402), hits: 5) -> "block.timestamp >= s_periodFinish"
+- Branch (branch: 9, path: 0) (location: (source ID: 34, lines: 310..313, bytes: 16404..16461), hits: 5) -> "{\n            s_rewardRate = reward / duration;\n        }"
 - Branch (branch: 9, path: 1) (location: (source ID: 34, lines: 310..317, bytes: 16365..16660), hits: 0) -> "if (block.timestamp >= s_periodF... leftover) / duration;\n        }"
-- Line (location: (source ID: 34, lines: 311..312, bytes: 16418..16450), hits: 4) -> "s_rewardRate = reward / duration"
-- Statement (location: (source ID: 34, lines: 311..312, bytes: 16418..16450), hits: 4) -> "s_rewardRate = reward / duration"
+- Line (location: (source ID: 34, lines: 311..312, bytes: 16418..16450), hits: 5) -> "s_rewardRate = reward / duration"
+- Statement (location: (source ID: 34, lines: 311..312, bytes: 16418..16450), hits: 5) -> "s_rewardRate = reward / duration"
 - Line (location: (source ID: 34, lines: 313..314, bytes: 16481..16533), hits: 0) -> "uint256 remaining = s_periodFinish - block.timestamp"
 - Statement (location: (source ID: 34, lines: 313..314, bytes: 16481..16533), hits: 0) -> "uint256 remaining = s_periodFinish - block.timestamp"
 - Statement (location: (source ID: 34, lines: 313..314, bytes: 16501..16533), hits: 0) -> "s_periodFinish - block.timestamp"
@@ -204,12 +205,12 @@ src/StakingPool.sol:
 - Statement (location: (source ID: 34, lines: 314..315, bytes: 16566..16590), hits: 0) -> "remaining * s_rewardRate"
 - Line (location: (source ID: 34, lines: 315..316, bytes: 16604..16649), hits: 0) -> "s_rewardRate = (reward + leftover) / duration"
 - Statement (location: (source ID: 34, lines: 315..316, bytes: 16604..16649), hits: 0) -> "s_rewardRate = (reward + leftover) / duration"
-- Line (location: (source ID: 34, lines: 317..318, bytes: 16669..16712), hits: 4) -> "s_periodFinish = block.timestamp + duration"
-- Statement (location: (source ID: 34, lines: 317..318, bytes: 16669..16712), hits: 4) -> "s_periodFinish = block.timestamp + duration"
-- Line (location: (source ID: 34, lines: 318..319, bytes: 16722..16756), hits: 4) -> "s_lastUpdateTime = block.timestamp"
-- Statement (location: (source ID: 34, lines: 318..319, bytes: 16722..16756), hits: 4) -> "s_lastUpdateTime = block.timestamp"
-- Line (location: (source ID: 34, lines: 319..320, bytes: 16766..16800), hits: 4) -> "emit RewardAdded(reward, duration)"
-- Statement (location: (source ID: 34, lines: 319..320, bytes: 16766..16800), hits: 4) -> "emit RewardAdded(reward, duration)"
+- Line (location: (source ID: 34, lines: 317..318, bytes: 16669..16712), hits: 5) -> "s_periodFinish = block.timestamp + duration"
+- Statement (location: (source ID: 34, lines: 317..318, bytes: 16669..16712), hits: 5) -> "s_periodFinish = block.timestamp + duration"
+- Line (location: (source ID: 34, lines: 318..319, bytes: 16722..16756), hits: 5) -> "s_lastUpdateTime = block.timestamp"
+- Statement (location: (source ID: 34, lines: 318..319, bytes: 16722..16756), hits: 5) -> "s_lastUpdateTime = block.timestamp"
+- Line (location: (source ID: 34, lines: 319..320, bytes: 16766..16800), hits: 5) -> "emit RewardAdded(reward, duration)"
+- Statement (location: (source ID: 34, lines: 319..320, bytes: 16766..16800), hits: 5) -> "emit RewardAdded(reward, duration)"
 - Line (location: (source ID: 34, lines: 333..341, bytes: 17432..17836), hits: 4) -> "function withdraw(uint256 amount...drawn(msg.sender, amount);\n    }"
 - Function "withdraw" (location: (source ID: 34, lines: 333..341, bytes: 17432..17836), hits: 4) -> "function withdraw(uint256 amount...drawn(msg.sender, amount);\n    }"
 - Line (location: (source ID: 34, lines: 334..335, bytes: 17525..17536), hits: 4) -> "amount == 0"
@@ -245,19 +246,19 @@ src/StakingPool.sol:
 - Function "getUserBalance" (location: (source ID: 34, lines: 358..361, bytes: 18574..18682), hits: 2) -> "function getUserBalance(address ...  return s_balances[user];\n    }"
 - Line (location: (source ID: 34, lines: 359..360, bytes: 18652..18675), hits: 2) -> "return s_balances[user]"
 - Statement (location: (source ID: 34, lines: 359..360, bytes: 18652..18675), hits: 2) -> "return s_balances[user]"
-- Line (location: (source ID: 34, lines: 363..366, bytes: 18689..18795), hits: 2) -> "function getUserReward(address u...   return s_rewards[user];\n    }"
-- Function "getUserReward" (location: (source ID: 34, lines: 363..366, bytes: 18689..18795), hits: 2) -> "function getUserReward(address u...   return s_rewards[user];\n    }"
-- Line (location: (source ID: 34, lines: 364..365, bytes: 18766..18788), hits: 2) -> "return s_rewards[user]"
-- Statement (location: (source ID: 34, lines: 364..365, bytes: 18766..18788), hits: 2) -> "return s_rewards[user]"
-- Line (location: (source ID: 34, lines: 368..371, bytes: 18802..18935), hits: 1) -> "function getUserRewardPerTokenPa...rRewardPerTokenPaid[user];\n    }"
-- Function "getUserRewardPerTokenPaid" (location: (source ID: 34, lines: 368..371, bytes: 18802..18935), hits: 1) -> "function getUserRewardPerTokenPa...rRewardPerTokenPaid[user];\n    }"
-- Line (location: (source ID: 34, lines: 369..370, bytes: 18891..18928), hits: 1) -> "return s_userRewardPerTokenPaid[user]"
-- Statement (location: (source ID: 34, lines: 369..370, bytes: 18891..18928), hits: 1) -> "return s_userRewardPerTokenPaid[user]"
-- Line (location: (source ID: 34, lines: 373..376, bytes: 18944..19043), hits: 1) -> "function getRewardPerToken() pub...  return rewardPerToken();\n    }"
-- Function "getRewardPerToken" (location: (source ID: 34, lines: 373..376, bytes: 18944..19043), hits: 1) -> "function getRewardPerToken() pub...  return rewardPerToken();\n    }"
-- Line (location: (source ID: 34, lines: 374..375, bytes: 19013..19036), hits: 1) -> "return rewardPerToken()"
-- Statement (location: (source ID: 34, lines: 374..375, bytes: 19013..19036), hits: 1) -> "return rewardPerToken()"
-- Statement (location: (source ID: 34, lines: 374..375, bytes: 19020..19036), hits: 1) -> "rewardPerToken()"
+- Line (location: (source ID: 34, lines: 363..366, bytes: 18689..18795), hits: 1) -> "function getUserReward(address u...   return s_rewards[user];\n    }"
+- Function "getUserReward" (location: (source ID: 34, lines: 363..366, bytes: 18689..18795), hits: 1) -> "function getUserReward(address u...   return s_rewards[user];\n    }"
+- Line (location: (source ID: 34, lines: 364..365, bytes: 18766..18788), hits: 1) -> "return s_rewards[user]"
+- Statement (location: (source ID: 34, lines: 364..365, bytes: 18766..18788), hits: 1) -> "return s_rewards[user]"
+- Line (location: (source ID: 34, lines: 368..371, bytes: 18802..18935), hits: 0) -> "function getUserRewardPerTokenPa...rRewardPerTokenPaid[user];\n    }"
+- Function "getUserRewardPerTokenPaid" (location: (source ID: 34, lines: 368..371, bytes: 18802..18935), hits: 0) -> "function getUserRewardPerTokenPa...rRewardPerTokenPaid[user];\n    }"
+- Line (location: (source ID: 34, lines: 369..370, bytes: 18891..18928), hits: 0) -> "return s_userRewardPerTokenPaid[user]"
+- Statement (location: (source ID: 34, lines: 369..370, bytes: 18891..18928), hits: 0) -> "return s_userRewardPerTokenPaid[user]"
+- Line (location: (source ID: 34, lines: 373..376, bytes: 18944..19043), hits: 0) -> "function getRewardPerToken() pub...  return rewardPerToken();\n    }"
+- Function "getRewardPerToken" (location: (source ID: 34, lines: 373..376, bytes: 18944..19043), hits: 0) -> "function getRewardPerToken() pub...  return rewardPerToken();\n    }"
+- Line (location: (source ID: 34, lines: 374..375, bytes: 19013..19036), hits: 0) -> "return rewardPerToken()"
+- Statement (location: (source ID: 34, lines: 374..375, bytes: 19013..19036), hits: 0) -> "return rewardPerToken()"
+- Statement (location: (source ID: 34, lines: 374..375, bytes: 19020..19036), hits: 0) -> "rewardPerToken()"
 - Line (location: (source ID: 34, lines: 378..381, bytes: 19051..19142), hits: 1) -> "function getRewardRate() public ...      return s_rewardRate;\n    }"
 - Function "getRewardRate" (location: (source ID: 34, lines: 378..381, bytes: 19051..19142), hits: 1) -> "function getRewardRate() public ...      return s_rewardRate;\n    }"
 - Line (location: (source ID: 34, lines: 379..380, bytes: 19116..19135), hits: 1) -> "return s_rewardRate"
@@ -266,10 +267,10 @@ src/StakingPool.sol:
 - Function "getTotalSupply" (location: (source ID: 34, lines: 383..386, bytes: 19149..19242), hits: 2) -> "function getTotalSupply() public...     return s_totalSupply;\n    }"
 - Line (location: (source ID: 34, lines: 384..385, bytes: 19215..19235), hits: 2) -> "return s_totalSupply"
 - Statement (location: (source ID: 34, lines: 384..385, bytes: 19215..19235), hits: 2) -> "return s_totalSupply"
-- Line (location: (source ID: 34, lines: 388..391, bytes: 19249..19344), hits: 0) -> "function getPeriodFinish() publi...    return s_periodFinish;\n    }"
-- Function "getPeriodFinish" (location: (source ID: 34, lines: 388..391, bytes: 19249..19344), hits: 0) -> "function getPeriodFinish() publi...    return s_periodFinish;\n    }"
-- Line (location: (source ID: 34, lines: 389..390, bytes: 19316..19337), hits: 0) -> "return s_periodFinish"
-- Statement (location: (source ID: 34, lines: 389..390, bytes: 19316..19337), hits: 0) -> "return s_periodFinish"
+- Line (location: (source ID: 34, lines: 388..391, bytes: 19249..19344), hits: 1) -> "function getPeriodFinish() publi...    return s_periodFinish;\n    }"
+- Function "getPeriodFinish" (location: (source ID: 34, lines: 388..391, bytes: 19249..19344), hits: 1) -> "function getPeriodFinish() publi...    return s_periodFinish;\n    }"
+- Line (location: (source ID: 34, lines: 389..390, bytes: 19316..19337), hits: 1) -> "return s_periodFinish"
+- Statement (location: (source ID: 34, lines: 389..390, bytes: 19316..19337), hits: 1) -> "return s_periodFinish"
 - Line (location: (source ID: 34, lines: 392..395, bytes: 19350..19459), hits: 1) -> "function getRewardTokenAddress()...rn address(s_RewardToken);\n    }"
 - Function "getRewardTokenAddress" (location: (source ID: 34, lines: 392..395, bytes: 19350..19459), hits: 1) -> "function getRewardTokenAddress()...rn address(s_RewardToken);\n    }"
 - Line (location: (source ID: 34, lines: 393..394, bytes: 19423..19452), hits: 1) -> "return address(s_RewardToken)"
@@ -280,99 +281,99 @@ src/StakingPool.sol:
 - Statement (location: (source ID: 34, lines: 397..398, bytes: 19537..19565), hits: 1) -> "return address(s_StakeToken)"
 
 src/Tura11ERC20.sol:
-- Line (location: (source ID: 35, lines: 13..17, bytes: 307..412), hits: 14) -> "constructor() ERC20(\"Tura11\", \"T...owner(), INITIAL_SUPPLY);\n\n    }"
-- Function "constructor" (location: (source ID: 35, lines: 13..17, bytes: 307..412), hits: 14) -> "constructor() ERC20(\"Tura11\", \"T...owner(), INITIAL_SUPPLY);\n\n    }"
-- Line (location: (source ID: 35, lines: 14..15, bytes: 374..404), hits: 14) -> "_mint(owner(), INITIAL_SUPPLY)"
-- Statement (location: (source ID: 35, lines: 14..15, bytes: 374..404), hits: 14) -> "_mint(owner(), INITIAL_SUPPLY)"
-- Line (location: (source ID: 35, lines: 19..22, bytes: 419..514), hits: 14) -> "function mint(address to, uint25...        _mint(to, amount);\n    }"
-- Function "mint" (location: (source ID: 35, lines: 19..22, bytes: 419..514), hits: 14) -> "function mint(address to, uint25...        _mint(to, amount);\n    }"
-- Line (location: (source ID: 35, lines: 20..21, bytes: 490..507), hits: 14) -> "_mint(to, amount)"
-- Statement (location: (source ID: 35, lines: 20..21, bytes: 490..507), hits: 14) -> "_mint(to, amount)"
+- Line (location: (source ID: 35, lines: 13..17, bytes: 307..412), hits: 15) -> "constructor() ERC20(\"Tura11\", \"T...owner(), INITIAL_SUPPLY);\n\n    }"
+- Function "constructor" (location: (source ID: 35, lines: 13..17, bytes: 307..412), hits: 15) -> "constructor() ERC20(\"Tura11\", \"T...owner(), INITIAL_SUPPLY);\n\n    }"
+- Line (location: (source ID: 35, lines: 14..15, bytes: 374..404), hits: 15) -> "_mint(owner(), INITIAL_SUPPLY)"
+- Statement (location: (source ID: 35, lines: 14..15, bytes: 374..404), hits: 15) -> "_mint(owner(), INITIAL_SUPPLY)"
+- Line (location: (source ID: 35, lines: 19..22, bytes: 419..514), hits: 15) -> "function mint(address to, uint25...        _mint(to, amount);\n    }"
+- Function "mint" (location: (source ID: 35, lines: 19..22, bytes: 419..514), hits: 15) -> "function mint(address to, uint25...        _mint(to, amount);\n    }"
+- Line (location: (source ID: 35, lines: 20..21, bytes: 490..507), hits: 15) -> "_mint(to, amount)"
+- Statement (location: (source ID: 35, lines: 20..21, bytes: 490..507), hits: 15) -> "_mint(to, amount)"
 
 Anchors for Contract "Tura11ERC20" (solc 0.8.30, source ID 35):
-- creation IC 5 -> Item 247: Line (location: (source ID: 35, lines: 13..17, bytes: 307..412), hits: 14)
-- creation IC 5 -> Item 248: Function "constructor" (location: (source ID: 35, lines: 13..17, bytes: 307..412), hits: 14)
-- creation IC 288 -> Item 249: Line (location: (source ID: 35, lines: 14..15, bytes: 374..404), hits: 14)
-- creation IC 288 -> Item 250: Statement (location: (source ID: 35, lines: 14..15, bytes: 374..404), hits: 14)
--  runtime IC 452 -> Item 251: Line (location: (source ID: 35, lines: 19..22, bytes: 419..514), hits: 14)
--  runtime IC 452 -> Item 252: Function "mint" (location: (source ID: 35, lines: 19..22, bytes: 419..514), hits: 14)
--  runtime IC 987 -> Item 253: Line (location: (source ID: 35, lines: 20..21, bytes: 490..507), hits: 14)
--  runtime IC 987 -> Item 254: Statement (location: (source ID: 35, lines: 20..21, bytes: 490..507), hits: 14)
+- creation IC 5 -> Item 247: Line (location: (source ID: 35, lines: 13..17, bytes: 307..412), hits: 15)
+- creation IC 5 -> Item 248: Function "constructor" (location: (source ID: 35, lines: 13..17, bytes: 307..412), hits: 15)
+- creation IC 288 -> Item 249: Line (location: (source ID: 35, lines: 14..15, bytes: 374..404), hits: 15)
+- creation IC 288 -> Item 250: Statement (location: (source ID: 35, lines: 14..15, bytes: 374..404), hits: 15)
+-  runtime IC 452 -> Item 251: Line (location: (source ID: 35, lines: 19..22, bytes: 419..514), hits: 15)
+-  runtime IC 452 -> Item 252: Function "mint" (location: (source ID: 35, lines: 19..22, bytes: 419..514), hits: 15)
+-  runtime IC 987 -> Item 253: Line (location: (source ID: 35, lines: 20..21, bytes: 490..507), hits: 15)
+-  runtime IC 987 -> Item 254: Statement (location: (source ID: 35, lines: 20..21, bytes: 490..507), hits: 15)
 
 Anchors for Contract "StakingPool" (solc 0.8.30, source ID 34):
-- creation IC 5 -> Item 52: Line (location: (source ID: 34, lines: 160..166, bytes: 8570..8914), hits: 16)
-- creation IC 5 -> Item 53: Function "constructor" (location: (source ID: 34, lines: 160..166, bytes: 8570..8914), hits: 16)
-- creation IC 215 -> Item 54: Line (location: (source ID: 34, lines: 161..162, bytes: 8659..8684), hits: 16)
-- creation IC 215 -> Item 55: Statement (location: (source ID: 34, lines: 161..162, bytes: 8659..8684), hits: 16)
+- creation IC 5 -> Item 52: Line (location: (source ID: 34, lines: 160..166, bytes: 8570..8914), hits: 17)
+- creation IC 5 -> Item 53: Function "constructor" (location: (source ID: 34, lines: 160..166, bytes: 8570..8914), hits: 17)
+- creation IC 215 -> Item 54: Line (location: (source ID: 34, lines: 161..162, bytes: 8659..8684), hits: 17)
+- creation IC 215 -> Item 55: Statement (location: (source ID: 34, lines: 161..162, bytes: 8659..8684), hits: 17)
 - creation IC 266 -> Item 56: Statement (location: (source ID: 34, lines: 161..162, bytes: 8686..8730), hits: 1)
 - creation IC 266 -> Item 57: Branch (branch: 1, path: 0) (location: (source ID: 34, lines: 161..162, bytes: 8686..8730), hits: 1)
-- creation IC 327 -> Item 58: Line (location: (source ID: 34, lines: 162..163, bytes: 8744..8770), hits: 15)
-- creation IC 327 -> Item 59: Statement (location: (source ID: 34, lines: 162..163, bytes: 8744..8770), hits: 15)
+- creation IC 327 -> Item 58: Line (location: (source ID: 34, lines: 162..163, bytes: 8744..8770), hits: 16)
+- creation IC 327 -> Item 59: Statement (location: (source ID: 34, lines: 162..163, bytes: 8744..8770), hits: 16)
 - creation IC 378 -> Item 60: Statement (location: (source ID: 34, lines: 162..163, bytes: 8772..8817), hits: 1)
 - creation IC 378 -> Item 61: Branch (branch: 2, path: 0) (location: (source ID: 34, lines: 162..163, bytes: 8772..8817), hits: 1)
-- creation IC 439 -> Item 62: Line (location: (source ID: 34, lines: 163..164, bytes: 8827..8861), hits: 14)
-- creation IC 439 -> Item 63: Statement (location: (source ID: 34, lines: 163..164, bytes: 8827..8861), hits: 14)
-- creation IC 503 -> Item 64: Line (location: (source ID: 34, lines: 164..165, bytes: 8871..8907), hits: 14)
-- creation IC 503 -> Item 65: Statement (location: (source ID: 34, lines: 164..165, bytes: 8871..8907), hits: 14)
--  runtime IC 1695 -> Item 39: Line (location: (source ID: 34, lines: 139..148, bytes: 7526..7858), hits: 4)
--  runtime IC 1695 -> Item 40: Function "updateReward" (location: (source ID: 34, lines: 139..148, bytes: 7526..7858), hits: 4)
--  runtime IC 1695 -> Item 41: Line (location: (source ID: 34, lines: 140..141, bytes: 7575..7616), hits: 4)
--  runtime IC 1695 -> Item 42: Statement (location: (source ID: 34, lines: 140..141, bytes: 7575..7616), hits: 4)
--  runtime IC 1709 -> Item 43: Line (location: (source ID: 34, lines: 141..142, bytes: 7626..7671), hits: 4)
--  runtime IC 1709 -> Item 44: Statement (location: (source ID: 34, lines: 141..142, bytes: 7626..7671), hits: 4)
--  runtime IC 1723 -> Item 45: Line (location: (source ID: 34, lines: 142..143, bytes: 7685..7706), hits: 4)
--  runtime IC 1723 -> Item 46: Statement (location: (source ID: 34, lines: 142..143, bytes: 7685..7706), hits: 4)
+- creation IC 439 -> Item 62: Line (location: (source ID: 34, lines: 163..164, bytes: 8827..8861), hits: 15)
+- creation IC 439 -> Item 63: Statement (location: (source ID: 34, lines: 163..164, bytes: 8827..8861), hits: 15)
+- creation IC 503 -> Item 64: Line (location: (source ID: 34, lines: 164..165, bytes: 8871..8907), hits: 15)
+- creation IC 503 -> Item 65: Statement (location: (source ID: 34, lines: 164..165, bytes: 8871..8907), hits: 15)
+-  runtime IC 1695 -> Item 39: Line (location: (source ID: 34, lines: 139..148, bytes: 7526..7858), hits: 5)
+-  runtime IC 1695 -> Item 40: Function "updateReward" (location: (source ID: 34, lines: 139..148, bytes: 7526..7858), hits: 5)
+-  runtime IC 1695 -> Item 41: Line (location: (source ID: 34, lines: 140..141, bytes: 7575..7616), hits: 5)
+-  runtime IC 1695 -> Item 42: Statement (location: (source ID: 34, lines: 140..141, bytes: 7575..7616), hits: 5)
+-  runtime IC 1709 -> Item 43: Line (location: (source ID: 34, lines: 141..142, bytes: 7626..7671), hits: 5)
+-  runtime IC 1709 -> Item 44: Statement (location: (source ID: 34, lines: 141..142, bytes: 7626..7671), hits: 5)
+-  runtime IC 1723 -> Item 45: Line (location: (source ID: 34, lines: 142..143, bytes: 7685..7706), hits: 5)
+-  runtime IC 1723 -> Item 46: Statement (location: (source ID: 34, lines: 142..143, bytes: 7685..7706), hits: 5)
 -  runtime IC 1774 -> Item 47: Branch (branch: 0, path: 0) (location: (source ID: 34, lines: 142..146, bytes: 7708..7841), hits: 0)
 -  runtime IC 1774 -> Item 48: Line (location: (source ID: 34, lines: 143..144, bytes: 7722..7758), hits: 0)
 -  runtime IC 1774 -> Item 49: Statement (location: (source ID: 34, lines: 143..144, bytes: 7722..7758), hits: 0)
 -  runtime IC 1848 -> Item 50: Line (location: (source ID: 34, lines: 144..145, bytes: 7772..7830), hits: 0)
 -  runtime IC 1848 -> Item 51: Statement (location: (source ID: 34, lines: 144..145, bytes: 7772..7830), hits: 0)
--  runtime IC 876 -> Item 66: Line (location: (source ID: 34, lines: 176..183, bytes: 9512..9731), hits: 0)
--  runtime IC 876 -> Item 67: Function "lastTimeRewardApplicable" (location: (source ID: 34, lines: 176..183, bytes: 9512..9731), hits: 0)
--  runtime IC 3144 -> Item 68: Line (location: (source ID: 34, lines: 177..178, bytes: 9592..9624), hits: 70)
--  runtime IC 3144 -> Item 69: Statement (location: (source ID: 34, lines: 177..178, bytes: 9592..9624), hits: 70)
--  runtime IC 3154 -> Item 70: Branch (branch: 3, path: 0) (location: (source ID: 34, lines: 177..180, bytes: 9626..9672), hits: 41)
--  runtime IC 3163 -> Item 71: Branch (branch: 3, path: 1) (location: (source ID: 34, lines: 177..182, bytes: 9588..9725), hits: 29)
--  runtime IC 3154 -> Item 72: Line (location: (source ID: 34, lines: 178..179, bytes: 9640..9661), hits: 41)
--  runtime IC 3154 -> Item 73: Statement (location: (source ID: 34, lines: 178..179, bytes: 9640..9661), hits: 41)
--  runtime IC 3164 -> Item 74: Line (location: (source ID: 34, lines: 180..181, bytes: 9692..9714), hits: 29)
--  runtime IC 3164 -> Item 75: Statement (location: (source ID: 34, lines: 180..181, bytes: 9692..9714), hits: 29)
+-  runtime IC 876 -> Item 66: Line (location: (source ID: 34, lines: 176..183, bytes: 9512..9731), hits: 2)
+-  runtime IC 876 -> Item 67: Function "lastTimeRewardApplicable" (location: (source ID: 34, lines: 176..183, bytes: 9512..9731), hits: 2)
+-  runtime IC 3144 -> Item 68: Line (location: (source ID: 34, lines: 177..178, bytes: 9592..9624), hits: 67)
+-  runtime IC 3144 -> Item 69: Statement (location: (source ID: 34, lines: 177..178, bytes: 9592..9624), hits: 67)
+-  runtime IC 3154 -> Item 70: Branch (branch: 3, path: 0) (location: (source ID: 34, lines: 177..180, bytes: 9626..9672), hits: 44)
+-  runtime IC 3163 -> Item 71: Branch (branch: 3, path: 1) (location: (source ID: 34, lines: 177..182, bytes: 9588..9725), hits: 23)
+-  runtime IC 3154 -> Item 72: Line (location: (source ID: 34, lines: 178..179, bytes: 9640..9661), hits: 44)
+-  runtime IC 3154 -> Item 73: Statement (location: (source ID: 34, lines: 178..179, bytes: 9640..9661), hits: 44)
+-  runtime IC 3164 -> Item 74: Line (location: (source ID: 34, lines: 180..181, bytes: 9692..9714), hits: 23)
+-  runtime IC 3164 -> Item 75: Statement (location: (source ID: 34, lines: 180..181, bytes: 9692..9714), hits: 23)
 -  runtime IC 1268 -> Item 76: Line (location: (source ID: 34, lines: 199..207, bytes: 10530..10867), hits: 2)
 -  runtime IC 1268 -> Item 77: Function "rewardPerToken" (location: (source ID: 34, lines: 199..207, bytes: 10530..10867), hits: 2)
--  runtime IC 4527 -> Item 78: Line (location: (source ID: 34, lines: 200..201, bytes: 10596..10661), hits: 48)
--  runtime IC 4527 -> Item 79: Statement (location: (source ID: 34, lines: 200..201, bytes: 10596..10661), hits: 48)
--  runtime IC 4531 -> Item 80: Statement (location: (source ID: 34, lines: 200..201, bytes: 10616..10642), hits: 48)
--  runtime IC 4528 -> Item 81: Statement (location: (source ID: 34, lines: 200..201, bytes: 10616..10661), hits: 48)
--  runtime IC 4551 -> Item 82: Line (location: (source ID: 34, lines: 201..202, bytes: 10675..10693), hits: 48)
--  runtime IC 4551 -> Item 83: Statement (location: (source ID: 34, lines: 201..202, bytes: 10675..10693), hits: 48)
--  runtime IC 4560 -> Item 84: Branch (branch: 4, path: 0) (location: (source ID: 34, lines: 201..204, bytes: 10695..10749), hits: 26)
--  runtime IC 4570 -> Item 85: Branch (branch: 4, path: 1) (location: (source ID: 34, lines: 201..206, bytes: 10671..10861), hits: 22)
--  runtime IC 4560 -> Item 86: Line (location: (source ID: 34, lines: 202..203, bytes: 10709..10738), hits: 26)
--  runtime IC 4560 -> Item 87: Statement (location: (source ID: 34, lines: 202..203, bytes: 10709..10738), hits: 26)
--  runtime IC 4571 -> Item 88: Line (location: (source ID: 34, lines: 204..205, bytes: 10769..10850), hits: 22)
--  runtime IC 4571 -> Item 89: Statement (location: (source ID: 34, lines: 204..205, bytes: 10769..10850), hits: 22)
--  runtime IC 4571 -> Item 90: Statement (location: (source ID: 34, lines: 204..205, bytes: 10776..10850), hits: 22)
+-  runtime IC 4527 -> Item 78: Line (location: (source ID: 34, lines: 200..201, bytes: 10596..10661), hits: 44)
+-  runtime IC 4527 -> Item 79: Statement (location: (source ID: 34, lines: 200..201, bytes: 10596..10661), hits: 44)
+-  runtime IC 4531 -> Item 80: Statement (location: (source ID: 34, lines: 200..201, bytes: 10616..10642), hits: 44)
+-  runtime IC 4528 -> Item 81: Statement (location: (source ID: 34, lines: 200..201, bytes: 10616..10661), hits: 44)
+-  runtime IC 4551 -> Item 82: Line (location: (source ID: 34, lines: 201..202, bytes: 10675..10693), hits: 44)
+-  runtime IC 4551 -> Item 83: Statement (location: (source ID: 34, lines: 201..202, bytes: 10675..10693), hits: 44)
+-  runtime IC 4560 -> Item 84: Branch (branch: 4, path: 0) (location: (source ID: 34, lines: 201..204, bytes: 10695..10749), hits: 25)
+-  runtime IC 4570 -> Item 85: Branch (branch: 4, path: 1) (location: (source ID: 34, lines: 201..206, bytes: 10671..10861), hits: 19)
+-  runtime IC 4560 -> Item 86: Line (location: (source ID: 34, lines: 202..203, bytes: 10709..10738), hits: 25)
+-  runtime IC 4560 -> Item 87: Statement (location: (source ID: 34, lines: 202..203, bytes: 10709..10738), hits: 25)
+-  runtime IC 4571 -> Item 88: Line (location: (source ID: 34, lines: 204..205, bytes: 10769..10850), hits: 19)
+-  runtime IC 4571 -> Item 89: Statement (location: (source ID: 34, lines: 204..205, bytes: 10769..10850), hits: 19)
+-  runtime IC 4571 -> Item 90: Statement (location: (source ID: 34, lines: 204..205, bytes: 10776..10850), hits: 19)
 -  runtime IC 486 -> Item 91: Line (location: (source ID: 34, lines: 224..227, bytes: 11685..11876), hits: 5)
 -  runtime IC 486 -> Item 92: Function "earned" (location: (source ID: 34, lines: 224..227, bytes: 11685..11876), hits: 5)
--  runtime IC 1436 -> Item 93: Line (location: (source ID: 34, lines: 225..226, bytes: 11758..11869), hits: 23)
--  runtime IC 1436 -> Item 94: Statement (location: (source ID: 34, lines: 225..226, bytes: 11758..11869), hits: 23)
--  runtime IC 1507 -> Item 95: Statement (location: (source ID: 34, lines: 225..226, bytes: 11765..11841), hits: 23)
--  runtime IC 1498 -> Item 96: Statement (location: (source ID: 34, lines: 225..226, bytes: 11765..11848), hits: 23)
--  runtime IC 1436 -> Item 97: Statement (location: (source ID: 34, lines: 225..226, bytes: 11765..11869), hits: 23)
--  runtime IC 996 -> Item 98: Line (location: (source ID: 34, lines: 239..246, bytes: 12513..12850), hits: 13)
--  runtime IC 996 -> Item 99: Function "stake" (location: (source ID: 34, lines: 239..246, bytes: 12513..12850), hits: 13)
--  runtime IC 3521 -> Item 100: Line (location: (source ID: 34, lines: 240..241, bytes: 12605..12616), hits: 13)
--  runtime IC 3521 -> Item 101: Statement (location: (source ID: 34, lines: 240..241, bytes: 12605..12616), hits: 13)
+-  runtime IC 1436 -> Item 93: Line (location: (source ID: 34, lines: 225..226, bytes: 11758..11869), hits: 21)
+-  runtime IC 1436 -> Item 94: Statement (location: (source ID: 34, lines: 225..226, bytes: 11758..11869), hits: 21)
+-  runtime IC 1507 -> Item 95: Statement (location: (source ID: 34, lines: 225..226, bytes: 11765..11841), hits: 21)
+-  runtime IC 1498 -> Item 96: Statement (location: (source ID: 34, lines: 225..226, bytes: 11765..11848), hits: 21)
+-  runtime IC 1436 -> Item 97: Statement (location: (source ID: 34, lines: 225..226, bytes: 11765..11869), hits: 21)
+-  runtime IC 996 -> Item 98: Line (location: (source ID: 34, lines: 239..246, bytes: 12513..12850), hits: 11)
+-  runtime IC 996 -> Item 99: Function "stake" (location: (source ID: 34, lines: 239..246, bytes: 12513..12850), hits: 11)
+-  runtime IC 3521 -> Item 100: Line (location: (source ID: 34, lines: 240..241, bytes: 12605..12616), hits: 11)
+-  runtime IC 3521 -> Item 101: Statement (location: (source ID: 34, lines: 240..241, bytes: 12605..12616), hits: 11)
 -  runtime IC 3528 -> Item 102: Statement (location: (source ID: 34, lines: 240..241, bytes: 12618..12653), hits: 1)
 -  runtime IC 3528 -> Item 103: Branch (branch: 5, path: 0) (location: (source ID: 34, lines: 240..241, bytes: 12618..12653), hits: 1)
--  runtime IC 3578 -> Item 104: Line (location: (source ID: 34, lines: 241..242, bytes: 12663..12695), hits: 12)
--  runtime IC 3578 -> Item 105: Statement (location: (source ID: 34, lines: 241..242, bytes: 12663..12695), hits: 12)
--  runtime IC 3661 -> Item 106: Line (location: (source ID: 34, lines: 242..243, bytes: 12705..12728), hits: 12)
--  runtime IC 3661 -> Item 107: Statement (location: (source ID: 34, lines: 242..243, bytes: 12705..12728), hits: 12)
--  runtime IC 3685 -> Item 108: Line (location: (source ID: 34, lines: 243..244, bytes: 12738..12802), hits: 12)
--  runtime IC 3685 -> Item 109: Statement (location: (source ID: 34, lines: 243..244, bytes: 12738..12802), hits: 12)
--  runtime IC 3763 -> Item 110: Line (location: (source ID: 34, lines: 244..245, bytes: 12812..12843), hits: 12)
--  runtime IC 3763 -> Item 111: Statement (location: (source ID: 34, lines: 244..245, bytes: 12812..12843), hits: 12)
+-  runtime IC 3578 -> Item 104: Line (location: (source ID: 34, lines: 241..242, bytes: 12663..12695), hits: 10)
+-  runtime IC 3578 -> Item 105: Statement (location: (source ID: 34, lines: 241..242, bytes: 12663..12695), hits: 10)
+-  runtime IC 3661 -> Item 106: Line (location: (source ID: 34, lines: 242..243, bytes: 12705..12728), hits: 10)
+-  runtime IC 3661 -> Item 107: Statement (location: (source ID: 34, lines: 242..243, bytes: 12705..12728), hits: 10)
+-  runtime IC 3685 -> Item 108: Line (location: (source ID: 34, lines: 243..244, bytes: 12738..12802), hits: 10)
+-  runtime IC 3685 -> Item 109: Statement (location: (source ID: 34, lines: 243..244, bytes: 12738..12802), hits: 10)
+-  runtime IC 3763 -> Item 110: Line (location: (source ID: 34, lines: 244..245, bytes: 12812..12843), hits: 10)
+-  runtime IC 3763 -> Item 111: Statement (location: (source ID: 34, lines: 244..245, bytes: 12812..12843), hits: 10)
 -  runtime IC 1318 -> Item 112: Line (location: (source ID: 34, lines: 254..258, bytes: 13315..13412), hits: 0)
 -  runtime IC 1318 -> Item 113: Function "exit" (location: (source ID: 34, lines: 254..258, bytes: 13315..13412), hits: 0)
 -  runtime IC 5523 -> Item 114: Line (location: (source ID: 34, lines: 255..256, bytes: 13350..13382), hits: 0)
@@ -409,23 +410,23 @@ Anchors for Contract "StakingPool" (solc 0.8.30, source ID 34):
 -  runtime IC 5427 -> Item 145: Statement (location: (source ID: 34, lines: 289..290, bytes: 15234..15251), hits: 0)
 -  runtime IC 5435 -> Item 146: Statement (location: (source ID: 34, lines: 289..290, bytes: 15253..15303), hits: 0)
 -  runtime IC 5435 -> Item 147: Branch (branch: 7, path: 0) (location: (source ID: 34, lines: 289..290, bytes: 15253..15303), hits: 0)
--  runtime IC 534 -> Item 148: Line (location: (source ID: 34, lines: 304..321, bytes: 16003..16807), hits: 4)
--  runtime IC 534 -> Item 149: Function "notifyRewardAmount" (location: (source ID: 34, lines: 304..321, bytes: 16003..16807), hits: 4)
--  runtime IC 1917 -> Item 150: Line (location: (source ID: 34, lines: 305..306, bytes: 16122..16140), hits: 4)
--  runtime IC 1917 -> Item 151: Statement (location: (source ID: 34, lines: 305..306, bytes: 16122..16140), hits: 4)
+-  runtime IC 534 -> Item 148: Line (location: (source ID: 34, lines: 304..321, bytes: 16003..16807), hits: 5)
+-  runtime IC 534 -> Item 149: Function "notifyRewardAmount" (location: (source ID: 34, lines: 304..321, bytes: 16003..16807), hits: 5)
+-  runtime IC 1917 -> Item 150: Line (location: (source ID: 34, lines: 305..306, bytes: 16122..16140), hits: 5)
+-  runtime IC 1917 -> Item 151: Statement (location: (source ID: 34, lines: 305..306, bytes: 16122..16140), hits: 5)
 -  runtime IC 1928 -> Item 152: Branch (branch: 8, path: 0) (location: (source ID: 34, lines: 305..308, bytes: 16142..16249), hits: 0)
 -  runtime IC 1928 -> Item 153: Line (location: (source ID: 34, lines: 306..307, bytes: 16201..16238), hits: 0)
 -  runtime IC 1928 -> Item 154: Statement (location: (source ID: 34, lines: 306..307, bytes: 16201..16238), hits: 0)
--  runtime IC 1978 -> Item 155: Line (location: (source ID: 34, lines: 308..309, bytes: 16258..16323), hits: 4)
--  runtime IC 1978 -> Item 156: Statement (location: (source ID: 34, lines: 308..309, bytes: 16258..16323), hits: 4)
--  runtime IC 2056 -> Item 157: Line (location: (source ID: 34, lines: 309..310, bytes: 16333..16355), hits: 4)
--  runtime IC 2056 -> Item 158: Statement (location: (source ID: 34, lines: 309..310, bytes: 16333..16355), hits: 4)
--  runtime IC 2080 -> Item 159: Line (location: (source ID: 34, lines: 310..311, bytes: 16369..16402), hits: 4)
--  runtime IC 2080 -> Item 160: Statement (location: (source ID: 34, lines: 310..311, bytes: 16369..16402), hits: 4)
--  runtime IC 2089 -> Item 161: Branch (branch: 9, path: 0) (location: (source ID: 34, lines: 310..313, bytes: 16404..16461), hits: 4)
+-  runtime IC 1978 -> Item 155: Line (location: (source ID: 34, lines: 308..309, bytes: 16258..16323), hits: 5)
+-  runtime IC 1978 -> Item 156: Statement (location: (source ID: 34, lines: 308..309, bytes: 16258..16323), hits: 5)
+-  runtime IC 2056 -> Item 157: Line (location: (source ID: 34, lines: 309..310, bytes: 16333..16355), hits: 5)
+-  runtime IC 2056 -> Item 158: Statement (location: (source ID: 34, lines: 309..310, bytes: 16333..16355), hits: 5)
+-  runtime IC 2080 -> Item 159: Line (location: (source ID: 34, lines: 310..311, bytes: 16369..16402), hits: 5)
+-  runtime IC 2080 -> Item 160: Statement (location: (source ID: 34, lines: 310..311, bytes: 16369..16402), hits: 5)
+-  runtime IC 2089 -> Item 161: Branch (branch: 9, path: 0) (location: (source ID: 34, lines: 310..313, bytes: 16404..16461), hits: 5)
 -  runtime IC 2111 -> Item 162: Branch (branch: 9, path: 1) (location: (source ID: 34, lines: 310..317, bytes: 16365..16660), hits: 0)
--  runtime IC 2089 -> Item 163: Line (location: (source ID: 34, lines: 311..312, bytes: 16418..16450), hits: 4)
--  runtime IC 2089 -> Item 164: Statement (location: (source ID: 34, lines: 311..312, bytes: 16418..16450), hits: 4)
+-  runtime IC 2089 -> Item 163: Line (location: (source ID: 34, lines: 311..312, bytes: 16418..16450), hits: 5)
+-  runtime IC 2089 -> Item 164: Statement (location: (source ID: 34, lines: 311..312, bytes: 16418..16450), hits: 5)
 -  runtime IC 2112 -> Item 165: Line (location: (source ID: 34, lines: 313..314, bytes: 16481..16533), hits: 0)
 -  runtime IC 2112 -> Item 166: Statement (location: (source ID: 34, lines: 313..314, bytes: 16481..16533), hits: 0)
 -  runtime IC 2113 -> Item 167: Statement (location: (source ID: 34, lines: 313..314, bytes: 16501..16533), hits: 0)
@@ -434,12 +435,12 @@ Anchors for Contract "StakingPool" (solc 0.8.30, source ID 34):
 -  runtime IC 2130 -> Item 170: Statement (location: (source ID: 34, lines: 314..315, bytes: 16566..16590), hits: 0)
 -  runtime IC 2146 -> Item 171: Line (location: (source ID: 34, lines: 315..316, bytes: 16604..16649), hits: 0)
 -  runtime IC 2146 -> Item 172: Statement (location: (source ID: 34, lines: 315..316, bytes: 16604..16649), hits: 0)
--  runtime IC 2178 -> Item 173: Line (location: (source ID: 34, lines: 317..318, bytes: 16669..16712), hits: 4)
--  runtime IC 2178 -> Item 174: Statement (location: (source ID: 34, lines: 317..318, bytes: 16669..16712), hits: 4)
--  runtime IC 2196 -> Item 175: Line (location: (source ID: 34, lines: 318..319, bytes: 16722..16756), hits: 4)
--  runtime IC 2196 -> Item 176: Statement (location: (source ID: 34, lines: 318..319, bytes: 16722..16756), hits: 4)
--  runtime IC 2203 -> Item 177: Line (location: (source ID: 34, lines: 319..320, bytes: 16766..16800), hits: 4)
--  runtime IC 2203 -> Item 178: Statement (location: (source ID: 34, lines: 319..320, bytes: 16766..16800), hits: 4)
+-  runtime IC 2178 -> Item 173: Line (location: (source ID: 34, lines: 317..318, bytes: 16669..16712), hits: 5)
+-  runtime IC 2178 -> Item 174: Statement (location: (source ID: 34, lines: 317..318, bytes: 16669..16712), hits: 5)
+-  runtime IC 2196 -> Item 175: Line (location: (source ID: 34, lines: 318..319, bytes: 16722..16756), hits: 5)
+-  runtime IC 2196 -> Item 176: Statement (location: (source ID: 34, lines: 318..319, bytes: 16722..16756), hits: 5)
+-  runtime IC 2203 -> Item 177: Line (location: (source ID: 34, lines: 319..320, bytes: 16766..16800), hits: 5)
+-  runtime IC 2203 -> Item 178: Statement (location: (source ID: 34, lines: 319..320, bytes: 16766..16800), hits: 5)
 -  runtime IC 562 -> Item 179: Line (location: (source ID: 34, lines: 333..341, bytes: 17432..17836), hits: 4)
 -  runtime IC 562 -> Item 180: Function "withdraw" (location: (source ID: 34, lines: 333..341, bytes: 17432..17836), hits: 4)
 -  runtime IC 2496 -> Item 181: Line (location: (source ID: 34, lines: 334..335, bytes: 17525..17536), hits: 4)
@@ -475,19 +476,19 @@ Anchors for Contract "StakingPool" (solc 0.8.30, source ID 34):
 -  runtime IC 698 -> Item 211: Function "getUserBalance" (location: (source ID: 34, lines: 358..361, bytes: 18574..18682), hits: 2)
 -  runtime IC 3028 -> Item 212: Line (location: (source ID: 34, lines: 359..360, bytes: 18652..18675), hits: 2)
 -  runtime IC 3028 -> Item 213: Statement (location: (source ID: 34, lines: 359..360, bytes: 18652..18675), hits: 2)
--  runtime IC 1190 -> Item 214: Line (location: (source ID: 34, lines: 363..366, bytes: 18689..18795), hits: 2)
--  runtime IC 1190 -> Item 215: Function "getUserReward" (location: (source ID: 34, lines: 363..366, bytes: 18689..18795), hits: 2)
--  runtime IC 4448 -> Item 216: Line (location: (source ID: 34, lines: 364..365, bytes: 18766..18788), hits: 2)
--  runtime IC 4448 -> Item 217: Statement (location: (source ID: 34, lines: 364..365, bytes: 18766..18788), hits: 2)
--  runtime IC 650 -> Item 218: Line (location: (source ID: 34, lines: 368..371, bytes: 18802..18935), hits: 1)
--  runtime IC 650 -> Item 219: Function "getUserRewardPerTokenPaid" (location: (source ID: 34, lines: 368..371, bytes: 18802..18935), hits: 1)
--  runtime IC 2958 -> Item 220: Line (location: (source ID: 34, lines: 369..370, bytes: 18891..18928), hits: 1)
--  runtime IC 2958 -> Item 221: Statement (location: (source ID: 34, lines: 369..370, bytes: 18891..18928), hits: 1)
--  runtime IC 1404 -> Item 222: Line (location: (source ID: 34, lines: 373..376, bytes: 18944..19043), hits: 1)
--  runtime IC 1404 -> Item 223: Function "getRewardPerToken" (location: (source ID: 34, lines: 373..376, bytes: 18944..19043), hits: 1)
--  runtime IC 5757 -> Item 224: Line (location: (source ID: 34, lines: 374..375, bytes: 19013..19036), hits: 1)
--  runtime IC 5757 -> Item 225: Statement (location: (source ID: 34, lines: 374..375, bytes: 19013..19036), hits: 1)
--  runtime IC 5757 -> Item 226: Statement (location: (source ID: 34, lines: 374..375, bytes: 19020..19036), hits: 1)
+-  runtime IC 1190 -> Item 214: Line (location: (source ID: 34, lines: 363..366, bytes: 18689..18795), hits: 1)
+-  runtime IC 1190 -> Item 215: Function "getUserReward" (location: (source ID: 34, lines: 363..366, bytes: 18689..18795), hits: 1)
+-  runtime IC 4448 -> Item 216: Line (location: (source ID: 34, lines: 364..365, bytes: 18766..18788), hits: 1)
+-  runtime IC 4448 -> Item 217: Statement (location: (source ID: 34, lines: 364..365, bytes: 18766..18788), hits: 1)
+-  runtime IC 650 -> Item 218: Line (location: (source ID: 34, lines: 368..371, bytes: 18802..18935), hits: 0)
+-  runtime IC 650 -> Item 219: Function "getUserRewardPerTokenPaid" (location: (source ID: 34, lines: 368..371, bytes: 18802..18935), hits: 0)
+-  runtime IC 2958 -> Item 220: Line (location: (source ID: 34, lines: 369..370, bytes: 18891..18928), hits: 0)
+-  runtime IC 2958 -> Item 221: Statement (location: (source ID: 34, lines: 369..370, bytes: 18891..18928), hits: 0)
+-  runtime IC 1404 -> Item 222: Line (location: (source ID: 34, lines: 373..376, bytes: 18944..19043), hits: 0)
+-  runtime IC 1404 -> Item 223: Function "getRewardPerToken" (location: (source ID: 34, lines: 373..376, bytes: 18944..19043), hits: 0)
+-  runtime IC 5757 -> Item 224: Line (location: (source ID: 34, lines: 374..375, bytes: 19013..19036), hits: 0)
+-  runtime IC 5757 -> Item 225: Statement (location: (source ID: 34, lines: 374..375, bytes: 19013..19036), hits: 0)
+-  runtime IC 5757 -> Item 226: Statement (location: (source ID: 34, lines: 374..375, bytes: 19020..19036), hits: 0)
 -  runtime IC 846 -> Item 227: Line (location: (source ID: 34, lines: 378..381, bytes: 19051..19142), hits: 1)
 -  runtime IC 846 -> Item 228: Function "getRewardRate" (location: (source ID: 34, lines: 378..381, bytes: 19051..19142), hits: 1)
 -  runtime IC 3135 -> Item 229: Line (location: (source ID: 34, lines: 379..380, bytes: 19116..19135), hits: 1)
@@ -496,10 +497,10 @@ Anchors for Contract "StakingPool" (solc 0.8.30, source ID 34):
 -  runtime IC 1160 -> Item 232: Function "getTotalSupply" (location: (source ID: 34, lines: 383..386, bytes: 19149..19242), hits: 2)
 -  runtime IC 4439 -> Item 233: Line (location: (source ID: 34, lines: 384..385, bytes: 19215..19235), hits: 2)
 -  runtime IC 4439 -> Item 234: Statement (location: (source ID: 34, lines: 384..385, bytes: 19215..19235), hits: 2)
--  runtime IC 1238 -> Item 235: Line (location: (source ID: 34, lines: 388..391, bytes: 19249..19344), hits: 0)
--  runtime IC 1238 -> Item 236: Function "getPeriodFinish" (location: (source ID: 34, lines: 388..391, bytes: 19249..19344), hits: 0)
--  runtime IC 4518 -> Item 237: Line (location: (source ID: 34, lines: 389..390, bytes: 19316..19337), hits: 0)
--  runtime IC 4518 -> Item 238: Statement (location: (source ID: 34, lines: 389..390, bytes: 19316..19337), hits: 0)
+-  runtime IC 1238 -> Item 235: Line (location: (source ID: 34, lines: 388..391, bytes: 19249..19344), hits: 1)
+-  runtime IC 1238 -> Item 236: Function "getPeriodFinish" (location: (source ID: 34, lines: 388..391, bytes: 19249..19344), hits: 1)
+-  runtime IC 4518 -> Item 237: Line (location: (source ID: 34, lines: 389..390, bytes: 19316..19337), hits: 1)
+-  runtime IC 4518 -> Item 238: Statement (location: (source ID: 34, lines: 389..390, bytes: 19316..19337), hits: 1)
 -  runtime IC 966 -> Item 239: Line (location: (source ID: 34, lines: 392..395, bytes: 19350..19459), hits: 1)
 -  runtime IC 966 -> Item 240: Function "getRewardTokenAddress" (location: (source ID: 34, lines: 392..395, bytes: 19350..19459), hits: 1)
 -  runtime IC 3251 -> Item 241: Line (location: (source ID: 34, lines: 393..394, bytes: 19423..19452), hits: 1)
