@@ -137,13 +137,17 @@ contract StakingPool is Ownable, ReentrancyGuard {
     ///         global accumulator before changing rewardRate, without targeting any user.
     /// @param  account User to snapshot, or address(0) for a global-only update.
     modifier updateReward(address account) {
+        _updateReward(account);
+        _;
+    }
+
+    function _updateReward(address account) internal {
         s_rewardPerTokenStored = rewardPerToken();
         s_lastUpdateTime = lastTimeRewardApplicable();
         if (account != address(0)) {
             s_rewards[account] = earned(account);
             s_userRewardPerTokenPaid[account] = s_rewardPerTokenStored;
         }
-        _;
     }
 
     // =========================================================================
