@@ -128,4 +128,8 @@ contract StakingFactory is Ownable {
     function getAllPools() external view returns (address[] memory) {
         return s_allPools;
     }
+
+    function getRewardToken() external view returns (address) {
+        return address(rewardToken);
+    }
 }
