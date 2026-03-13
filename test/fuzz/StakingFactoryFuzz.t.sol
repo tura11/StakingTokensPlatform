@@ -32,4 +32,35 @@ contract StakingFactoryFuzzTest is Test {
     }
 
 
+    function testFuzz_CantCreateMulitplePoolsAtSameTokenAddress(address stakeToken) public {
+        vm.assume(stakeToken != address(0));
+        factory.createPool(stakeToken);
+        vm.expectRevert(StakingFactory.StakingFactory__PoolAlreadyExists.selector);
+        factory.createPool(stakeToken);
+    }
+
+    function testFuzz_OnlyOwnerCanCreatePools(address creator, address stakeToken) public {
+        vm.assume(stakeToken != address(0));
+        vm.assume(creator != owner);
+        vm.startPrank(creator);
+        vm.expectRevert();
+        factory.createPool(stakeToken);
+        vm.stopPrank();
+    }
+
+    function testFuzz_AllPoolsLengthGrows(uint8 poolCount) public {
+        vm.assume(poolCount > 0 && poolCount <= 10);
+        for (uint8 i = 0; i < poolCount; i++) {
+            address fakeToken = address(uint160(i + 1)); 
+            factory.createPool(fakeToken);
+        }
+        assertEq(factory.getAllPools().length, poolCount);
+    }
+
+
+
+
 }
+
+
+// czy getAllPools rośnie poprawnie przy wielu poolach
