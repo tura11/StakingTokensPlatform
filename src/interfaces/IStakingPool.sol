@@ -4,6 +4,8 @@ pragma solidity ^0.8.20;
 
 
 interface IStakingPool {
+
+
     function stake(address amount) external;
     function withdraw(address amount) external;
     function claimReward() external;
