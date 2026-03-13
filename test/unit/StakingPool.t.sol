@@ -30,6 +30,7 @@ contract StakingPoolTest is Test {
         user1 = makeAddr("user1");
         user2 = makeAddr("user2");
 
+        rewardToken.mint(owner, 1000);
         stakeToken.mint(owner, 1000);
 
         vm.startPrank(user1);
@@ -306,7 +307,7 @@ contract StakingPoolTest is Test {
         vm.prank(owner);
         pool.emergencyWithdrawAll();
         assertEq(stakeToken.balanceOf(owner), 3000); //owner has  1000 stake tokens
-        assertEq(rewardToken.balanceOf(owner), 10000000 * 1e18);  //owner has  10000000 * 1e18 reward tokens minted from Tura11ERC20.sol
+        assertEq(rewardToken.balanceOf(owner), 10000000 * 1e18 + 1000);  //owner has  10000000 * 1e18 reward tokens minted from Tura11ERC20.sol + 1000 from mint in setUp
     }
 
     // ============================================================================
