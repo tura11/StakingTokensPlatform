@@ -17,6 +17,7 @@ contract StakingFactoryTest is Test {
     StakingFactory factory;
     IStakingPool pool;
     address owner;
+    address user1;
 
 
     function setUp() public {
@@ -24,6 +25,7 @@ contract StakingFactoryTest is Test {
         stakeToken = new ERC20Mock();
         factory = new StakingFactory(address(rewardToken));
         owner = address(this);
+        user1 = makeAddr("user1");
     }
 
 
@@ -75,6 +77,13 @@ contract StakingFactoryTest is Test {
         factory.createPool(address(stakeToken));
         vm.expectRevert(StakingFactory.StakingFactory__PoolAlreadyExists.selector);
         factory.createPool(address(stakeToken));
+    }
+
+    function testPoolCanOnlyBeCreatedByOwner() public {
+        vm.startPrank(user1);
+        vm.expectRevert();
+        factory.createPool(address(stakeToken));
+        vm.stopPrank();
     }
 
 
