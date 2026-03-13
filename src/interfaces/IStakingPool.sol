@@ -27,7 +27,7 @@ interface IStakingPool {
     function getPeriodFinish() external view returns (uint256);
     function getRewardTokenAddress() external view returns (address);
     function getStakeTokenAddress() external view returns (address);
-
+    function owner() external view returns (address);
 
 
 
