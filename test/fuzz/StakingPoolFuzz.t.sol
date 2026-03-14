@@ -44,4 +44,18 @@ contract StakingPoolFuzzTest is Test {
         assertEq(pool.getTotalSupply(), amount);
 
     }
+
+
+    function testFuzz_Withdraw(uint256 amount) public {
+        vm.assume(amount > 1); // we have to assume amount > 1 to make sure we can always withdraw at least one token
+        vm.startPrank(user1);
+        stakeToken.mint(user1, amount);
+        stakeToken.approve(address(pool), amount);
+        pool.stake(amount);
+        pool.withdraw(amount - 1);
+        vm.stopPrank();
+
+        assertEq(pool.getUserBalance(user1),1); // example amount = 1000, amount - 1 = 999 so 1000 - 999 = 1
+        assertEq(pool.getTotalSupply(),1);
+    }
 }
