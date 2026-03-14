@@ -58,4 +58,17 @@ contract StakingPoolFuzzTest is Test {
         assertEq(pool.getUserBalance(user1),1); // example amount = 1000, amount - 1 = 999 so 1000 - 999 = 1
         assertEq(pool.getTotalSupply(),1);
     }
+
+
+    function testFuzz_RewardRateCalculation(uint256 reward, uint256 duration) public {
+        vm.assume(reward > 0 && reward < 10000000 * 1e18);
+        vm.assume(duration > 0 && duration < 30 days);
+        vm.startPrank(owner);
+        rewardToken.mint(owner, reward);
+        rewardToken.approve(address(pool), reward);
+        pool.notifyRewardAmount(reward, duration);
+        vm.stopPrank();
+
+        assertLe(pool.getRewardRate() * duration, reward);
+    }
 }

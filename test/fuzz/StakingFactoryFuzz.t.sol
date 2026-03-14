@@ -63,4 +63,3 @@ contract StakingFactoryFuzzTest is Test {
 }
 
 
-// czy getAllPools rośnie poprawnie przy wielu poolach
