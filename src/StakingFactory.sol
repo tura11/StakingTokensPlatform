@@ -43,7 +43,7 @@ contract StakingFactory is Ownable {
     /**
      * @notice T11 — the proprietary ERC20 reward token injected into every deployed pool.
      */
-    Tura11ERC20 public rewardToken;
+    Tura11ERC20 public immutable rewardToken;
 
     /**
      * @notice Maps a staked token address to its corresponding StakingPool address.
