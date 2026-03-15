@@ -71,4 +71,28 @@ contract StakingPoolFuzzTest is Test {
 
         assertLe(pool.getRewardRate() * duration, reward);
     }
+
+
+    function testFuzz_WithdrawDoestNotLoseRewards(uint256 amount) public {
+        vm.assume(amount > 0);
+        vm.startPrank(owner);
+        rewardToken.mint(owner, 1000);
+        rewardToken.approve(address(pool), 1000);
+        pool.notifyRewardAmount(1000, 100);
+        vm.stopPrank();
+        vm.startPrank(user1);
+        stakeToken.mint(user1, amount);
+        stakeToken.approve(address(pool), amount);
+        pool.stake(amount);
+        
+        vm.warp(block.timestamp + 50);
+
+        uint256 rewardsUser1 = pool.earned(user1);
+        pool.withdraw(amount);
+        vm.stopPrank();
+
+        assertEq(pool.earned(user1), rewardsUser1);
+        assertEq(pool.getUserBalance(user1), 0);
+        assertEq(pool.getTotalSupply(), 0);
+    }
 }
