@@ -80,10 +80,10 @@ contract StakingPool is Ownable, ReentrancyGuard {
     // =========================================================================
 
     /// @notice ERC20 token that users deposit to participate in the pool.
-    IERC20 s_StakeToken;
+    IERC20 immutable s_StakeToken;
 
     /// @notice T11 — the proprietary ERC20 token distributed as staking rewards.
-    IERC20 s_RewardToken;
+    IERC20 immutable s_RewardToken;
 
     /// @notice Sum of all currently staked token balances across all users.
     uint256 public s_totalSupply;
