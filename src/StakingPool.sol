@@ -255,7 +255,7 @@ contract StakingPool is Ownable, ReentrancyGuard {
     ///
     ///         This is the recommended way to fully exit the pool in a single transaction.
     ///
-    function exit() external {
+    function exit() external nonReentrant updateReward(msg.sender) {
         withdraw(s_balances[msg.sender]);
         claimReward();
     }
@@ -359,45 +359,45 @@ contract StakingPool is Ownable, ReentrancyGuard {
     // Getters
     // =========================================================================
 
-    function getUserBalance(address user) public view returns (uint256) {
+    function getUserBalance(address user) external view returns (uint256) {
         return s_balances[user];
     }
 
 
-    function getUserReward(address user) public view returns (uint256) {
+    function getUserReward(address user) external view returns (uint256) {
         return s_rewards[user];
     }
 
 
-    function getUserRewardPerTokenPaid(address user) public view returns (uint256) {
+    function getUserRewardPerTokenPaid(address user) external view returns (uint256) {
         return s_userRewardPerTokenPaid[user];
     }
 
   
-    function getRewardPerToken() public view returns (uint256) {
+    function getRewardPerToken() external view returns (uint256) {
         return rewardPerToken();
     }
 
  
-    function getRewardRate() public view returns (uint256) {
+    function getRewardRate() external view returns (uint256) {
         return s_rewardRate;
     }
 
 
-    function getTotalSupply() public view returns (uint256) {
+    function getTotalSupply() external view returns (uint256) {
         return s_totalSupply;
     }
 
 
-    function getPeriodFinish() public view returns (uint256) {
+    function getPeriodFinish() external view returns (uint256) {
         return s_periodFinish;
     }
 
-    function getRewardTokenAddress() public view returns (address) {
+    function getRewardTokenAddress() external view returns (address) {
         return address(s_RewardToken);
     }
 
-    function getStakeTokenAddress() public view returns (address) {
+    function getStakeTokenAddress() external view returns (address) {
         return address(s_StakeToken);
     }
 }
