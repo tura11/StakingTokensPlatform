@@ -255,7 +255,7 @@ contract StakingPool is Ownable, ReentrancyGuard {
     ///
     ///         This is the recommended way to fully exit the pool in a single transaction.
     ///
-    function exit() external nonReentrant updateReward(msg.sender) {
+    function exit() external  updateReward(msg.sender) {
         withdraw(s_balances[msg.sender]);
         claimReward();
     }
