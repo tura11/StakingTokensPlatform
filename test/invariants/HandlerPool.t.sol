@@ -13,18 +13,17 @@ contract Handler is Test {
     Tura11ERC20 rewardToken;
     ERC20Mock stakeToken;
 
-    address[] users = new address[](2);
+    address[] public users = new address[](2);
     uint256 public totalDeposited;
     uint256 public totalWithdrawn;
     uint256 public totalRewardDeposited;
     uint256 public constant MAX_AMOUNT = 10_000_000 * 1e18;
-    address owner;
 
-    constructor(StakingPool _pool, Tura11ERC20 _rewardToken, ERC20Mock _stakeToken, address _owner) {
+
+    constructor(StakingPool _pool, Tura11ERC20 _rewardToken, ERC20Mock _stakeToken) {
         pool = _pool;
         rewardToken = _rewardToken;
         stakeToken = _stakeToken;
-        owner = _owner;
         users[0] = makeAddr("user1");
         users[1] = makeAddr("user2");
     }
@@ -66,11 +65,12 @@ contract Handler is Test {
         pool.claimReward();
     }
 
-    function notifyRewardAmount(uint256 reward, uint256 duration) public {
+   function notifyRewardAmount(uint256 reward, uint256 duration) public {
         reward = bound(reward, 1, MAX_AMOUNT);
         duration = bound(duration, 1, 30 days);
-
-        rewardToken.mint(owner, reward);
+        
+        address owner = pool.owner();
+        deal(address(rewardToken), owner, reward); 
 
         vm.startPrank(owner);
         rewardToken.approve(address(pool), reward);
