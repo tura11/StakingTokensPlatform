@@ -2,10 +2,7 @@
 
 pragma solidity ^0.8.20;
 
-
 interface IStakingPool {
-
-
     function stake(address amount) external;
     function withdraw(address amount) external;
     function claimReward() external;
@@ -28,14 +25,4 @@ interface IStakingPool {
     function getRewardTokenAddress() external view returns (address);
     function getStakeTokenAddress() external view returns (address);
     function owner() external view returns (address);
-
-
-
-
-
-
-
-
-
-
 }

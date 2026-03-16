@@ -8,7 +8,6 @@ import {Tura11ERC20} from "../../src/Tura11ERC20.sol";
 import {ERC20Mock} from "openzeppelin-contracts/contracts/mocks/token/ERC20Mock.sol";
 
 contract Handler is Test {
-
     StakingPool pool;
     Tura11ERC20 rewardToken;
     ERC20Mock stakeToken;
@@ -18,7 +17,6 @@ contract Handler is Test {
     uint256 public totalWithdrawn;
     uint256 public totalRewardDeposited;
     uint256 public constant MAX_AMOUNT = 10_000_000 * 1e18;
-
 
     constructor(StakingPool _pool, Tura11ERC20 _rewardToken, ERC20Mock _stakeToken) {
         pool = _pool;
@@ -65,12 +63,12 @@ contract Handler is Test {
         pool.claimReward();
     }
 
-   function notifyRewardAmount(uint256 reward, uint256 duration) public {
+    function notifyRewardAmount(uint256 reward, uint256 duration) public {
         reward = bound(reward, 1, MAX_AMOUNT);
         duration = bound(duration, 1, 30 days);
-        
+
         address owner = pool.owner();
-        deal(address(rewardToken), owner, reward); 
+        deal(address(rewardToken), owner, reward);
 
         vm.startPrank(owner);
         rewardToken.approve(address(pool), reward);

@@ -2,14 +2,11 @@
 
 pragma solidity ^0.8.20;
 
-
 import {Test, console} from "forge-std/Test.sol";
 import {StakingFactory} from "../../src/StakingFactory.sol";
 import {Tura11ERC20} from "../../src/Tura11ERC20.sol";
 import {ERC20Mock} from "openzeppelin-contracts/contracts/mocks/token/ERC20Mock.sol";
 import {IStakingPool} from "../../src/interfaces/IStakingPool.sol";
-
-
 
 contract StakingFactoryTest is Test {
     Tura11ERC20 rewardToken;
@@ -19,7 +16,6 @@ contract StakingFactoryTest is Test {
     address owner;
     address user1;
 
-
     function setUp() public {
         rewardToken = new Tura11ERC20();
         stakeToken = new ERC20Mock();
@@ -27,7 +23,6 @@ contract StakingFactoryTest is Test {
         owner = address(this);
         user1 = makeAddr("user1");
     }
-
 
     // ============================================================================
     // CONSTRUCTOR TESTS
@@ -52,9 +47,9 @@ contract StakingFactoryTest is Test {
         assertEq(factory.getAllPools()[0], address(pool));
     }
 
-   function testCreateSecondPool() public {
+    function testCreateSecondPool() public {
         ERC20Mock stakeToken2 = new ERC20Mock();
-        
+
         pool = IStakingPool(factory.createPool(address(stakeToken)));
         IStakingPool pool2 = IStakingPool(factory.createPool(address(stakeToken2)));
 
@@ -72,7 +67,6 @@ contract StakingFactoryTest is Test {
         factory.createPool(address(0));
     }
 
-
     function testCreatePoolRevertIfPoolAlreadyExists() public {
         factory.createPool(address(stakeToken));
         vm.expectRevert(StakingFactory.StakingFactory__PoolAlreadyExists.selector);
@@ -85,6 +79,4 @@ contract StakingFactoryTest is Test {
         factory.createPool(address(stakeToken));
         vm.stopPrank();
     }
-
-
 }

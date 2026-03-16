@@ -2,13 +2,11 @@
 
 pragma solidity ^0.8.20;
 
-
 import {Test, console} from "forge-std/Test.sol";
 import {StakingFactory} from "../../src/StakingFactory.sol";
 import {Tura11ERC20} from "../../src/Tura11ERC20.sol";
 import {ERC20Mock} from "openzeppelin-contracts/contracts/mocks/token/ERC20Mock.sol";
 import {IStakingPool} from "../../src/interfaces/IStakingPool.sol";
-
 
 contract StakingFactoryFuzzTest is Test {
     StakingFactory factory;
@@ -31,7 +29,6 @@ contract StakingFactoryFuzzTest is Test {
         assertEq(factory.getAllPools()[0], address(pool));
     }
 
-
     function testFuzz_CantCreateMulitplePoolsAtSameTokenAddress(address stakeToken) public {
         vm.assume(stakeToken != address(0));
         factory.createPool(stakeToken);
@@ -51,15 +48,10 @@ contract StakingFactoryFuzzTest is Test {
     function testFuzz_AllPoolsLengthGrows(uint8 poolCount) public {
         vm.assume(poolCount > 0 && poolCount <= 10);
         for (uint8 i = 0; i < poolCount; i++) {
-            address fakeToken = address(uint160(i + 1)); 
+            address fakeToken = address(uint160(i + 1));
             factory.createPool(fakeToken);
         }
         assertEq(factory.getAllPools().length, poolCount);
     }
-
-
-
-
 }
-
 

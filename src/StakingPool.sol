@@ -2,9 +2,6 @@
 
 pragma solidity ^0.8.20;
 
-// @author  Tura11
-// @notice  T11 is a proprietary ERC20 token used as the reward asset in this protocol.
-
 import {SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
@@ -217,7 +214,7 @@ contract StakingPool is Ownable, ReentrancyGuard {
     ///            The subtraction ensures the user only earns rewards from the moment
     ///            they entered the pool, not from the beginning of the pool's existence.
     ///
-    /// 
+    ///
     ///
     ///         Example:
     ///           balance = 100, rewardPerToken = 8e18, checkpoint = 6e18, stored = 50
@@ -255,7 +252,7 @@ contract StakingPool is Ownable, ReentrancyGuard {
     ///
     ///         This is the recommended way to fully exit the pool in a single transaction.
     ///
-    function exit() external  updateReward(msg.sender) {
+    function exit() external updateReward(msg.sender) {
         withdraw(s_balances[msg.sender]);
         claimReward();
     }
@@ -306,7 +303,8 @@ contract StakingPool is Ownable, ReentrancyGuard {
     /// @param  duration Length of the reward period in seconds.
     ///
     function notifyRewardAmount(uint256 reward, uint256 duration) external onlyOwner updateReward(address(0)) {
-        if(duration > 30 days) { // we set max duration to 30 days for safety
+        if (duration > 30 days) {
+            // we set max duration to 30 days for safety
             revert StakingPool__DurationTooLong();
         }
         s_RewardToken.safeTransferFrom(msg.sender, address(this), reward);
@@ -363,31 +361,25 @@ contract StakingPool is Ownable, ReentrancyGuard {
         return s_balances[user];
     }
 
-
     function getUserReward(address user) external view returns (uint256) {
         return s_rewards[user];
     }
-
 
     function getUserRewardPerTokenPaid(address user) external view returns (uint256) {
         return s_userRewardPerTokenPaid[user];
     }
 
-  
     function getRewardPerToken() external view returns (uint256) {
         return rewardPerToken();
     }
 
- 
     function getRewardRate() external view returns (uint256) {
         return s_rewardRate;
     }
 
-
     function getTotalSupply() external view returns (uint256) {
         return s_totalSupply;
     }
-
 
     function getPeriodFinish() external view returns (uint256) {
         return s_periodFinish;

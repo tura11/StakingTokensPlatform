@@ -21,7 +21,6 @@ import {StakingPool} from "./StakingPool.sol";
  *          on the pool — not proxied through this contract.
  */
 contract StakingFactory is Ownable {
-
     // =========================================================================
     // Errors
     // =========================================================================
