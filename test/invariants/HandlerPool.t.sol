@@ -18,8 +18,7 @@ contract Handler is Test {
     address[] users = new address[](2);
     uint256 public totalDeposited;
     uint256 public totalWithdraw;
-    uint256 public constant MAX_DEPOSIT = 10000000 * 1e18;
-    uint256 public constant MAX_WITHDRAW = 1000000 * 1e18;
+    uint256 public constant MAX_AMOUNT = 10000000 * 1e18;
 
     constructor(StakingPool _pool, Tura11ERC20 _rewardToken, ERC20Mock _stakeToken) {
         pool = _pool;
@@ -42,6 +41,22 @@ contract Handler is Test {
 
         totalDeposited += amount;
 
+
+    }
+
+
+    function withdraw(uint256 userIndex, uint256 amount) public {
+        address user = users[userIndex % users.length];
+        
+        uint256 userBalance = pool.balanceOf(user);
+
+        if(userBalance == 0) {
+            return;
+        }
+        amount = bound(amount, 1, userBalance);
+
+        vm.prank(user);
+        pool.withdraw(amount);
 
     }
 
