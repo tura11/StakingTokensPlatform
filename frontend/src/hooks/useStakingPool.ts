@@ -9,6 +9,9 @@ export function useStakingPool() {
     address: STAKING_POOL_ADDRESS,
     abi: stakingPoolAbi,
     functionName: 'getTotalSupply',
+    query: { 
+      refetchInterval: 5000,
+    },
   });
 
   const { data: userBalance } = useReadContract({
@@ -16,7 +19,10 @@ export function useStakingPool() {
     abi: stakingPoolAbi,
     functionName: 'getUserBalance',
     args: [address!],
-    query: { enabled: !!address },
+    query: { 
+      enabled: !!address,
+      refetchInterval: 5000,
+    },
   });
 
   const { data: earned } = useReadContract({
@@ -24,7 +30,10 @@ export function useStakingPool() {
     abi: stakingPoolAbi,
     functionName: 'earned',
     args: [address!],
-    query: { enabled: !!address },
+    query: { 
+      enabled: !!address,
+      refetchInterval: 5000, 
+    },
   });
 
   const { data: rewardRate } = useReadContract({
