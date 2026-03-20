@@ -33,8 +33,8 @@ contract DeployLocal is Script {
 
         // 5. Fund pool with rewards
         rewardToken.approve(pool, 10_000 * 1e18);
-        StakingPool(pool).notifyRewardAmount(10_000 * 1e18, 30 days);
-        console.log("Pool funded with 10,000 T11 for 30 days");
+        StakingPool(pool).notifyRewardAmount(10_000 * 1e18, 3600);
+        console.log("Pool funded with 10,000 T11 for 1 hour");
 
         vm.stopBroadcast();
     }
@@ -44,4 +44,4 @@ contract DeployLocal is Script {
 //   StakingFactory deployed at: 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
 //   ERC20Mock (stakeToken) deployed at: 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
 //   StakingPool deployed at: 0xCafac3dD18aC6c6e92c921884f9E4176737C052c
-//   Pool funded with 10,000 T11 for 30 days
+//   Pool funded with 10,000 T11 for 1 hour
