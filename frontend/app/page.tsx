@@ -6,11 +6,13 @@ import { useAccount } from 'wagmi';
 import { formatEther } from 'viem';
 import { useStakingPool } from '@/src/hooks/useStakingPool';
 import { useStakingActions } from '@/src/hooks/useStakingActions';
+import { useClaimedTotal } from '@/src/hooks/useClaimedTotal';
 
 export default function Home() {
   const { isConnected } = useAccount();
   const { totalSupply, userBalance, earned, rewardRate, periodFinish } = useStakingPool();
   const { approve, stake, withdraw, claimReward, exit, isPending, isConfirming } = useStakingActions();
+  const { totalClaimedFormatted } = useClaimedTotal();
 
   const [stakeAmount, setStakeAmount] = useState('');
   const [withdrawAmount, setWithdrawAmount] = useState('');
@@ -29,7 +31,7 @@ export default function Home() {
   const loading = isPending || isConfirming;
 
   return (
-    <main style={{ position: 'relative', zIndex: 1, minHeight: '100vh', padding: '32px 24px', maxWidth: '1100px', margin: '0 auto' }}>
+    <main style={{ position: 'relative', zIndex: 1, minHeight: '100vh', padding: '32px 24px', maxWidth: '1200px', margin: '0 auto' }}>
       <div className="scanline" />
 
       {/* Header */}
@@ -46,17 +48,18 @@ export default function Home() {
       </div>
 
       {/* Stats Row */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '16px', marginBottom: '24px' }}>
         {[
           { label: 'Total Staked', value: fmt(totalSupply), unit: 'TKN' },
           { label: 'Reward Rate', value: rewardRate ? fmt(rewardRate) : '—', unit: 'T11/s' },
           { label: 'Your Stake', value: fmt(userBalance), unit: 'TKN' },
+          { label: 'Total Claimed', value: totalClaimedFormatted, unit: 'T11' },
           { label: 'Period Ends', value: timeLeft > 0 ? `${daysLeft}d ${hoursLeft}h` : 'ENDED', unit: '' },
         ].map((stat) => (
           <div key={stat.label} className="card" style={{ padding: '20px' }}>
             <span className="label">{stat.label}</span>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginTop: '8px' }}>
-              <span className="value" style={{ fontSize: '20px' }}>{stat.value}</span>
+              <span className="value" style={{ fontSize: '18px' }}>{stat.value}</span>
               <span style={{ color: 'var(--text-dim)', fontSize: '11px', fontFamily: 'var(--font-orbitron)' }}>{stat.unit}</span>
             </div>
           </div>
@@ -156,6 +159,14 @@ export default function Home() {
                   {loading ? 'PENDING...' : 'EXIT ALL'}
                 </button>
               </div>
+              <div style={{ marginTop: '4px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <p style={{ fontSize: '10px', color: 'var(--text-dim)', fontFamily: 'var(--font-orbitron)', letterSpacing: '0.1em' }}>
+                  WITHDRAW → only stake tokens
+                </p>
+                <p style={{ fontSize: '10px', color: 'var(--text-dim)', fontFamily: 'var(--font-orbitron)', letterSpacing: '0.1em' }}>
+                  EXIT ALL → stake tokens + rewards
+                </p>
+              </div>
             </div>
           )}
         </div>
@@ -173,8 +184,8 @@ export default function Home() {
             <button
               className="btn btn-green"
               onClick={() => claimReward()}
-              disabled={!isConnected || loading || !earned || earned === BigInt(0)}
-              style={{ width: '100%', opacity: !isConnected || !earned || earned === BigInt(0) ? 0.4 : 1 }}
+              disabled={!isConnected || loading || !earned}
+              style={{ width: '100%', opacity: !isConnected || !earned ? 0.4 : 1 }}
             >
               {loading ? 'PENDING...' : 'CLAIM REWARDS'}
             </button>
