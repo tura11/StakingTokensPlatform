@@ -1,65 +1,194 @@
-import Image from "next/image";
+'use client';
+
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useState } from 'react';
+import { useAccount } from 'wagmi';
+import { formatEther } from 'viem';
+import { useStakingPool } from '@/src/hooks/useStakingPool';
+import { useStakingActions } from '@/src/hooks/useStakingActions';
 
 export default function Home() {
+  const { isConnected } = useAccount();
+  const { totalSupply, userBalance, earned, rewardRate, periodFinish } = useStakingPool();
+  const { approve, stake, withdraw, claimReward, exit, isPending, isConfirming } = useStakingActions();
+
+  const [stakeAmount, setStakeAmount] = useState('');
+  const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [activeTab, setActiveTab] = useState<'stake' | 'withdraw'>('stake');
+
+  const fmt = (val: bigint | undefined) =>
+    val !== undefined ? parseFloat(formatEther(val)).toFixed(4) : '—';
+
+  const timeLeft = periodFinish
+    ? Math.max(0, Number(periodFinish) - Math.floor(Date.now() / 1000))
+    : 0;
+
+  const daysLeft = Math.floor(timeLeft / 86400);
+  const hoursLeft = Math.floor((timeLeft % 86400) / 3600);
+
+  const loading = isPending || isConfirming;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main style={{ position: 'relative', zIndex: 1, minHeight: '100vh', padding: '32px 24px', maxWidth: '1100px', margin: '0 auto' }}>
+      <div className="scanline" />
+
+      {/* Header */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '48px' }}>
+        <div>
+          <div style={{ fontFamily: 'var(--font-orbitron)', fontSize: '10px', letterSpacing: '0.3em', color: 'var(--text-dim)', marginBottom: '6px' }}>
+            PROTOCOL // DEFI STAKING
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-orbitron)', fontSize: '28px', fontWeight: 900, color: 'var(--accent)', textShadow: '0 0 30px rgba(0,212,255,0.5)', letterSpacing: '0.1em' }}>
+            TURA11 <span style={{ color: 'var(--text-dim)' }}>/</span> STAKING
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <ConnectButton />
+      </div>
+
+      {/* Stats Row */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
+        {[
+          { label: 'Total Staked', value: fmt(totalSupply), unit: 'TKN' },
+          { label: 'Reward Rate', value: rewardRate ? fmt(rewardRate) : '—', unit: 'T11/s' },
+          { label: 'Your Stake', value: fmt(userBalance), unit: 'TKN' },
+          { label: 'Period Ends', value: timeLeft > 0 ? `${daysLeft}d ${hoursLeft}h` : 'ENDED', unit: '' },
+        ].map((stat) => (
+          <div key={stat.label} className="card" style={{ padding: '20px' }}>
+            <span className="label">{stat.label}</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginTop: '8px' }}>
+              <span className="value" style={{ fontSize: '20px' }}>{stat.value}</span>
+              <span style={{ color: 'var(--text-dim)', fontSize: '11px', fontFamily: 'var(--font-orbitron)' }}>{stat.unit}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Main Grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '16px' }}>
+
+        {/* Left — Stake/Withdraw */}
+        <div className="card" style={{ padding: '28px' }}>
+          {/* Tabs */}
+          <div style={{ display: 'flex', gap: '0', marginBottom: '28px', borderBottom: '1px solid var(--border)' }}>
+            {(['stake', 'withdraw'] as const).map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                style={{
+                  fontFamily: 'var(--font-orbitron)',
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  letterSpacing: '0.2em',
+                  textTransform: 'uppercase',
+                  padding: '12px 24px',
+                  background: 'transparent',
+                  border: 'none',
+                  borderBottom: activeTab === tab ? '2px solid var(--accent)' : '2px solid transparent',
+                  color: activeTab === tab ? 'var(--accent)' : 'var(--text-dim)',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  marginBottom: '-1px',
+                }}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {activeTab === 'stake' ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <span className="label">Amount to Stake</span>
+                <input
+                  className="input"
+                  type="number"
+                  placeholder="0.0000"
+                  value={stakeAmount}
+                  onChange={(e) => setStakeAmount(e.target.value)}
+                />
+              </div>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  className="btn"
+                  onClick={() => approve(stakeAmount)}
+                  disabled={!isConnected || loading || !stakeAmount}
+                  style={{ flex: 1, opacity: !isConnected || !stakeAmount ? 0.4 : 1 }}
+                >
+                  {loading ? 'PENDING...' : 'APPROVE'}
+                </button>
+                <button
+                  className="btn btn-green"
+                  onClick={() => stake(stakeAmount)}
+                  disabled={!isConnected || loading || !stakeAmount}
+                  style={{ flex: 1, opacity: !isConnected || !stakeAmount ? 0.4 : 1 }}
+                >
+                  {loading ? 'PENDING...' : 'STAKE'}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <span className="label">Amount to Withdraw</span>
+                <input
+                  className="input"
+                  type="number"
+                  placeholder="0.0000"
+                  value={withdrawAmount}
+                  onChange={(e) => setWithdrawAmount(e.target.value)}
+                />
+              </div>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  className="btn"
+                  onClick={() => withdraw(withdrawAmount)}
+                  disabled={!isConnected || loading || !withdrawAmount}
+                  style={{ flex: 1, opacity: !isConnected || !withdrawAmount ? 0.4 : 1 }}
+                >
+                  {loading ? 'PENDING...' : 'WITHDRAW'}
+                </button>
+                <button
+                  className="btn btn-red"
+                  onClick={() => exit()}
+                  disabled={!isConnected || loading}
+                  style={{ flex: 1, opacity: !isConnected ? 0.4 : 1 }}
+                >
+                  {loading ? 'PENDING...' : 'EXIT ALL'}
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-      </main>
-    </div>
+
+        {/* Right — Rewards */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div className="card" style={{ padding: '28px', flex: 1 }}>
+            <span className="label">Claimable Rewards</span>
+            <div style={{ margin: '16px 0 24px' }}>
+              <span className="value glow-text" style={{ fontSize: '32px', color: 'var(--green)' }}>
+                {fmt(earned)}
+              </span>
+              <span style={{ marginLeft: '8px', color: 'var(--text-dim)', fontFamily: 'var(--font-orbitron)', fontSize: '11px' }}>T11</span>
+            </div>
+            <button
+              className="btn btn-green"
+              onClick={() => claimReward()}
+              disabled={!isConnected || loading || !earned || earned === BigInt(0)}
+              style={{ width: '100%', opacity: !isConnected || !earned || earned === BigInt(0) ? 0.4 : 1 }}
+            >
+              {loading ? 'PENDING...' : 'CLAIM REWARDS'}
+            </button>
+          </div>
+
+          <div className="card" style={{ padding: '20px' }}>
+            <span className="label">Network</span>
+            <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--green)', boxShadow: '0 0 8px var(--green)' }} />
+              <span style={{ fontFamily: 'var(--font-orbitron)', fontSize: '11px', color: 'var(--text)' }}>ANVIL LOCAL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
   );
 }

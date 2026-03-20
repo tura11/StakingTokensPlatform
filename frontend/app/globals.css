@@ -1,26 +1,178 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #020408;
+  --surface: #0a0f1a;
+  --border: #1a2a3a;
+  --accent: #00d4ff;
+  --accent2: #7000ff;
+  --green: #00ff88;
+  --red: #ff3366;
+  --text: #c8d8e8;
+  --text-dim: #4a6a7a;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono), monospace;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: 
+    radial-gradient(1px 1px at 20% 30%, rgba(200,216,232,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 80% 10%, rgba(200,216,232,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 60%, rgba(200,216,232,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 10% 80%, rgba(200,216,232,0.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 50%, rgba(200,216,232,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 90%, rgba(200,216,232,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 25%, rgba(200,216,232,0.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 15% 45%, rgba(200,216,232,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 75% 75%, rgba(200,216,232,0.7) 0%, transparent 100%),
+    radial-gradient(2px 2px at 45% 15%, rgba(0,212,255,0.6) 0%, transparent 100%),
+    radial-gradient(2px 2px at 85% 85%, rgba(112,0,255,0.5) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse 60% 40% at 20% 50%, rgba(0,212,255,0.04) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 80% 30%, rgba(112,0,255,0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 50% 80%, rgba(0,255,136,0.03) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.6;
+}
+
+.btn {
+  font-family: var(--font-orbitron), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 12px 24px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.2s;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+.btn:hover {
+  background: var(--accent);
+  color: var(--bg);
+  box-shadow: 0 0 20px rgba(0,212,255,0.4);
+}
+
+.btn-green {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.btn-green:hover {
+  background: var(--green);
+  color: var(--bg);
+  box-shadow: 0 0 20px rgba(0,255,136,0.4);
+}
+
+.btn-red {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.btn-red:hover {
+  background: var(--red);
+  color: var(--bg);
+  box-shadow: 0 0 20px rgba(255,51,102,0.4);
+}
+
+.input {
+  background: rgba(0,212,255,0.05);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  padding: 12px 16px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 10px rgba(0,212,255,0.1);
+}
+
+.label {
+  font-family: var(--font-orbitron), monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.value {
+  font-family: var(--font-orbitron), monospace;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--accent);
+}
+
+.glow-text {
+  text-shadow: 0 0 20px currentColor;
+}
+
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.1), transparent);
+  animation: scan 8s linear infinite;
+  pointer-events: none;
+  z-index: 1;
 }
